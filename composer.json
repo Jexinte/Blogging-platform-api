@@ -1,0 +1,41 @@
+{
+    "name": "mamad/blogging-platform-api",
+    "description": "It's an api for a blogging platform",
+    "require-dev": {
+        "phpro/grumphp": "^2.7",
+        "friendsofphp/php-cs-fixer": "^3.63",
+        "phpstan/phpstan": "^1.12",
+        "phpunit/phpunit": "^11.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mamad\\BlogginPlatformApi\\": "src/",
+            "Config\\": "config/",
+            "Controller\\":"src/Controller/",
+            "Entity\\": "src/Entity",
+            "Exceptions\\":"src/Exceptions/",
+            "Enumeration\\": "src/Enumeration/",
+            "Repository\\": "src/Repository/",
+            "Service\\": "src/Service/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Yokke",
+            "email": "mdembelepro@gmail.com"
+        }
+    ],
+    "scripts": {
+        "fix-src-style": "./vendor/bin/php-cs-fixer fix src --config=php-cs-fixer.php",
+        "fix-tests-style": "./vendor/bin/php-cs-fixer fix tests --config=php-cs-fixer.php",
+        "fix-config-style": "./vendor/bin/php-cs-fixer fix config --config=php-cs-fixer.php",
+        "all-tests" :"./vendor/bin/phpunit tests",
+        "g-run":"./vendor/bin/grumphp run"
+    },
+    "require": {},
+    "config": {
+        "allow-plugins": {
+            "phpro/grumphp": true
+        }
+    }
+}
