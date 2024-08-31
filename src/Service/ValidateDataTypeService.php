@@ -32,7 +32,7 @@ class ValidateDataTypeService
 
     /**
      * Summary of isTagsAnArray
-     * @param array<array<string>> $arr
+     * @param array<mixed> $arr
      * @return bool
      */
     public function isTagsAnArray(array $arr): bool
@@ -66,7 +66,7 @@ class ValidateDataTypeService
      * @param string $json
      * @return bool
      */
-    public function isAllValuesTypesAreValids(string $json): bool
+    public function isAllValuesTypesAreValids(string $json): ?bool
     {
         $arr = json_decode($json, true);
 
@@ -81,10 +81,8 @@ class ValidateDataTypeService
                     return true;
                 }
                 return false;
-            default:
-                throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, Message::NOT_ALL_FIELDS_FILLED);
         }
-
+        return null;
     }
 
 }
