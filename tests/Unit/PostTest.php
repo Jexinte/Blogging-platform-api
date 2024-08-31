@@ -5,6 +5,15 @@ declare(strict_types=1);
 use Entity\Post;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * PHP version 8.
+ *
+ * @category tests\Unit
+ * @package  PostTest
+ * @author   Yokke <mdembelepro@gmail.com>
+ * @license  ISC License
+ * @link     https://github.com/Jexinte/Blogging-platform-api
+ */
 class PostTest extends TestCase
 {
     private Post $post;

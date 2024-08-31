@@ -15,6 +15,7 @@ use DateTime;
  * @license  ISC License
  * @link     https://github.com/Jexinte/Naruto
  */
+
 class Post
 {
     public int $id;

@@ -6,7 +6,6 @@ namespace Exceptions;
 
 use Exception;
 
-
 /**
  * PHP version 8.
  *
@@ -27,12 +26,12 @@ class ValidationException extends Exception
 
     /**
      * Summary of setTypeAndValueOfException
-     * @param string $key
+     * @param int $key
      * @param string $message
      * @return ValidationException
      */
     public function setTypeAndValueOfException(
-        string $key, 
+        int $key,
         string $message
     ): ?ValidationException {
         $this->errors[$key] = $message;
@@ -44,7 +43,7 @@ class ValidationException extends Exception
      * Summary of getErrors
      * @return array<string>
      */
-    public function getErrors() : array
+    public function getErrors(): array
     {
         return $this->errors;
     }
