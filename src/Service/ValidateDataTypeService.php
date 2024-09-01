@@ -64,7 +64,7 @@ class ValidateDataTypeService
     /**
      * Summary of isAllValuesTypesAreValids
      * @param string $json
-     * @return bool
+     * @return null|bool
      */
     public function isAllValuesTypesAreValids(string $json): ?bool
     {

@@ -80,9 +80,9 @@ class ValidateDataValueService
     /**
      * Summary of isAllValuesDataAreValids
      * @param string $json
-     * @return bool
+     * @return null|bool
      */
-    public function isAllValuesDataAreValids(string $json): bool
+    public function isAllValuesDataAreValids(string $json): ?bool
     {
         $arr = json_decode($json, true);
 
@@ -102,10 +102,8 @@ class ValidateDataValueService
                     return true;
                 }
                 return false;
-            default:
-                throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, Message::NOT_ALL_FIELDS_FILLED);
         }
-
+        return null;
     }
 
 

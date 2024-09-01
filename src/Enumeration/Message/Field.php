@@ -27,5 +27,4 @@ enum Field: string
     public const EMPTY_CONTENT = "The content field cannot be empty !";
     public const EMPTY_TAGS = "The tags field cannot be empty !";
     public const EMPTY_CATEGORY = "The category field cannot be empty !";
-    public const NOT_ALL_FIELDS_FILLED = "You have to filled all fields !";
 }
