@@ -37,7 +37,7 @@ class ValidateDataTypeService
      */
     public function isTagsAnArray(array $arr): bool
     {
-        switch(true) {
+        switch (true) {
             case is_array($arr["tags"]):
                 return true;
             default:
@@ -53,7 +53,7 @@ class ValidateDataTypeService
      */
     public function isValueAString(mixed $value, string $exceptionMessage): bool
     {
-        switch(true) {
+        switch (true) {
             case is_string($value):
                 return true;
             default:
@@ -70,14 +70,14 @@ class ValidateDataTypeService
     {
         $arr = json_decode($json, true);
 
-        switch(true) {
+        switch (true) {
             case (is_array($arr) && count($arr) == 4):
                 $isTitleAValidString = $this->isValueAString($arr['title'], Message::TITLE_IS_NOT_A_STRING);
                 $isContentAValidString = $this->isValueAString($arr["content"], Message::CONTENT_IS_NOT_A_STRING);
                 $isTagsAValidArray = $this->isTagsAnArray($arr);
                 $isCategoryAValidString = $this->isValueAString($arr["category"], Message::CATEGORY_IS_NOT_A_STRING);
 
-                if($isTitleAValidString && $isContentAValidString && $isTagsAValidArray && $isCategoryAValidString) {
+                if ($isTitleAValidString && $isContentAValidString && $isTagsAValidArray && $isCategoryAValidString) {
                     return true;
                 }
                 return false;
