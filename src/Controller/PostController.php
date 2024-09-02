@@ -40,4 +40,16 @@ class PostController
         $this->processDataForService->post($uri, $json);
     }
 
+    /**
+     * Summary of update
+     * @param string $uri
+     * @param string $json
+     * @return void
+     */
+    public function update(string $uri, string $json): void
+    {
+        $this->processDataForService->update($uri, $json);
+    }
+
+    
 }

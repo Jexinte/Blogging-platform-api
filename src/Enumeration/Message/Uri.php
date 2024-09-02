@@ -15,5 +15,6 @@ namespace Enumeration\Message;
  */
 enum Uri: string
 {
-    public const CREATE_WRONG_FORMAT = "Specify a valid URI in order to create a blog post !";
+    public const CREATE_WRONG_FORMAT = "In order to create a blog post specify the following URI : localhost/blogging-platform-api/public/index.php/create";
+    public const UPDATE_WRONG_FORMAT = "In order to update a blog post specify the following URI : localhost/blogging-platform-api/public/index.php/update/idOfThePost";
 }
