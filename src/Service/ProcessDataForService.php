@@ -37,6 +37,41 @@ class ProcessDataForService
     }
 
     /**
+     * Summary of isTheRightUri
+     * @param string $uri
+     * @param string $pattern
+     * @param string $message
+     * @return bool
+     */
+    public function isTheRightUri(string $uri, string $pattern, string $message): bool
+    {
+        if (preg_match($pattern, $uri)) {
+            return true;
+        }
+        throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, $message);
+
+    }
+
+    /**
+     * Summary of validator
+     * @param string $uri
+     * @param string $json
+     * @param string $regexPattern
+     * @param string $uriMessageWhenWrongFormat
+     * @return \Entity\Post
+     */
+    public function validator(string $uri, string $json, string $regexPattern, string $uriMessageWhenWrongFormat): Post
+    {
+        if ($this->isTheRightUri($uri, $regexPattern, $uriMessageWhenWrongFormat) && $this->validateDataTypeService->isAllValuesTypesAreValids($json) && $this->validateDataValueService->isAllValuesDataAreValids($json)) {
+            $dataFromJson = json_decode($json, true);
+            $post = new Post($dataFromJson['title'], $dataFromJson['content'], $dataFromJson['category'], $dataFromJson['tags']);
+            return $post;
+        }
+        throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, Message::ALL_FIELDS_MUST_BE_FILLED);
+
+    }
+
+    /**
      * Summary of post
      * @param string $uri
      * @param string $json
@@ -62,38 +97,7 @@ class ProcessDataForService
         }
     }
 
-    /**
-     * Summary of validator
-     * @param string $uri
-     * @param string $json
-     * @param string $regexPattern
-     * @param string $uriMessageWhenWrongFormat
-     * @return \Entity\Post
-     */
-    public function validator(string $uri, string $json, string $regexPattern, string $uriMessageWhenWrongFormat): Post
-    {
-        if ($this->isTheRightUri($uri, $regexPattern, $uriMessageWhenWrongFormat) && $this->validateDataTypeService->isAllValuesTypesAreValids($json) && $this->validateDataValueService->isAllValuesDataAreValids($json)) {
-            $dataFromJson = json_decode($json, true);
-            $post = new Post($dataFromJson['title'], $dataFromJson['content'], $dataFromJson['category'], $dataFromJson['tags']);
-            return $post;
-        }
-        throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, Message::ALL_FIELDS_MUST_BE_FILLED);
 
-    }
 
-    /**
-     * Summary of isTheRightUri
-     * @param string $uri
-     * @param string $pattern
-     * @param string $message
-     * @return bool
-     */
-    public function isTheRightUri(string $uri, string $pattern, string $message): bool
-    {
-        if (preg_match($pattern, $uri)) {
-            return true;
-        }
-        throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, $message);
 
-    }
 }

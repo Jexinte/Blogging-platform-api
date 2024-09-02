@@ -54,7 +54,6 @@ class PostRepository
         $tags = implode(',', $post->getTags());
         $createdAt = $post->getCreatedAt()->format(Format::ISO_8601);
         $updatedAt = $post->getUpdatedAt()->format(Format::ISO_8601);
-
         $req = $dbConnect->prepare('INSERT INTO post (title,content,category,tags,created_at,updated_at) VALUES(:title,:content,:category,:tags,:createdAt,:updatedAt)');
         $req->bindParam(':title', $title);
         $req->bindParam(':content', $content);
