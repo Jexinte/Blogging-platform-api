@@ -109,29 +109,29 @@ class ProcessDataForService
         $post = $this->validator($uri, $json, Route::UPDATE, Uri::UPDATE_WRONG_FORMAT);
 
         if (is_object($post)) {
-            $lastPostOfSlash = strrpos($uri,'/');
-            $id = intval(substr($uri,$lastPostOfSlash + 1));
+            $lastPostOfSlash = strrpos($uri, '/');
+            $id = intval(substr($uri, $lastPostOfSlash + 1));
             $postFromDbBasedOnIdFromTheUri = $this->postRepository->findBy($id);
 
-            switch(true) {
+            switch (true) {
                 case is_array($postFromDbBasedOnIdFromTheUri):
-                    $this->postRepository->update($post,$id);
+                    $this->postRepository->update($post, $id);
 
                     $output = fopen('php://output', 'w');
 
                     $postUpdated = $this->postRepository->findBy($id);
                     $postUpdated['created_at'] = implode('T', explode(' ', $postUpdated['created_at'])).'Z';
                     $postUpdated['updated_at'] = implode('T', explode(' ', $postUpdated['updated_at'])).'Z';
-        
+
                     fwrite($output, json_encode($postUpdated));
                     fclose($output);
 
                     break;
 
                 default:
-                throw $this->validationException->setTypeAndValueOfException(HttpStatus::NOT_FOUND,"The resource with the id $id do not exist !");
+                    throw $this->validationException->setTypeAndValueOfException(HttpStatus::NOT_FOUND, "The resource with the id $id do not exist !");
             }
-            
+
         }
     }
 

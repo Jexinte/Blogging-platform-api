@@ -41,7 +41,6 @@ interface PostCrud
 
 class PostRepository
 {
-    
     /**
      * Summary of __construct
      * @param \Config\DatabaseConnection $db
@@ -85,7 +84,7 @@ class PostRepository
      * @param int $id
      * @return void
      */
-    public function update(Post $post,int $id):void
+    public function update(Post $post, int $id): void
     {
         $dbConnect = $this->db->connect();
 
@@ -126,15 +125,15 @@ class PostRepository
      * @param int $id
      * @return array<string>|bool
      */
-    public function findBy(int $id):array|bool
+    public function findBy(int $id): array|bool
     {
         $dbConnect = $this->db->connect();
         $req = $dbConnect->prepare('SELECT * From post WHERE id = :id');
-        $req->bindParam(':id',$id);
+        $req->bindParam(':id', $id);
         $req->execute();
 
         $post = $req->fetch(PDO::FETCH_ASSOC);
-        
+
         return $post;
     }
 }

@@ -51,5 +51,5 @@ class PostController
         $this->processDataForService->update($uri, $json);
     }
 
-    
+
 }
