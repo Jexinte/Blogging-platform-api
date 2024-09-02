@@ -39,7 +39,7 @@ class Router
         $input = fopen('php://input', 'r');
 
 
-        switch($this->request->method()) {
+        switch ($this->request->method()) {
             case Method::POST:
                 $this->postController->create($this->request->uri(), stream_get_contents($input));
                 http_response_code(HttpStatus::CREATED);

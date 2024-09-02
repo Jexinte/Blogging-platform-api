@@ -43,6 +43,16 @@
         "d-load":"composer dump-autoload",
         "tests-service": "./vendor/bin/phpunit tests --filter=Service"
     },
+    "scripts-descriptions": {
+        "fix-src-style": "use php-cs-fixer to apply PSR-12 principles on src files",
+        "fix-tests-style": "use php-cs-fixer to apply PSR-12 principles on tests files",
+        "fix-config-style": "use php-cs-fixer to apply PSR-12 principles on config files",
+        "fix-util-style": "use php-cs-fixer to apply PSR-12 principles on util files",
+        "all-tests": "run all tests with phpunit",
+        "g-run": "run a checklist based on phpstan configuration and prevent commit if some fixes are needed",
+        "d-load": "update psr-4 new namespaces",
+        "tests-service": "run Service tests files"
+    },
     "require": {},
     "config": {
         "allow-plugins": {

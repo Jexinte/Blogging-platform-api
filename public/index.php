@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Repository\PostRepository;
+use Service\ProcessDataForService;
 use Util\Request;
 use Router\Router;
 use Enumeration\Database\ConnectionInformation;
@@ -16,12 +17,17 @@ require_once '../vendor/autoload.php';
 
 $request = new Request();
 $validationException = new ValidationException();
-$validateDataTypeService = new ValidateDataTypeService($validationException);
-$validateDataValueService = new ValidateDataValueService($validationException);
+
 $database = new DatabaseConnection(ConnectionInformation::HOST,ConnectionInformation::DB_NAME,ConnectionInformation::USERNAME,ConnectionInformation::PASSWORD);
 $postRepository = new PostRepository($database);
 
-$postController = new PostController($validateDataTypeService,$validationException,$validateDataValueService,$postRepository);
+$validateDataTypeService = new ValidateDataTypeService($validationException);
+$validateDataValueService = new ValidateDataValueService($validationException);
+$processDataForService = new ProcessDataForService($validateDataTypeService,$validateDataValueService,$validationException,$postRepository);
+
+
+$postController = new PostController($processDataForService);
+
 $router = new Router($request,$postController);
 
 try{

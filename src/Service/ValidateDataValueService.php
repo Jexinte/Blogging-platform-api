@@ -40,7 +40,7 @@ class ValidateDataValueService
     {
         $isAllHaveTheSamePattern = array_map(fn ($tag) =>  preg_match(StringPattern::FORMAT, $tag), $tags['tags']);
 
-        if(!in_array(false, $isAllHaveTheSamePattern)) {
+        if (!in_array(false, $isAllHaveTheSamePattern)) {
             return true;
         }
         throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, Message::WRONG_FORMAT_FOR_TAGS);
@@ -56,7 +56,7 @@ class ValidateDataValueService
      */
     public function isPatternValueMatch(string $pattern, mixed $value, string $exceptionMessage): bool
     {
-        if(preg_match($pattern, $value)) {
+        if (preg_match($pattern, $value)) {
             return true;
         }
         throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, $exceptionMessage);
@@ -71,7 +71,7 @@ class ValidateDataValueService
      */
     public function isValueNotEmpty(mixed $value, string $exceptionMessage): bool
     {
-        if(empty($value)) {
+        if (empty($value)) {
             throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, $exceptionMessage);
         }
         return true;
@@ -80,13 +80,13 @@ class ValidateDataValueService
     /**
      * Summary of isAllValuesDataAreValids
      * @param string $json
-     * @return bool
+     * @return null|bool
      */
-    public function isAllValuesDataAreValids(string $json): bool
+    public function isAllValuesDataAreValids(string $json): ?bool
     {
         $arr = json_decode($json, true);
 
-        switch(true) {
+        switch (true) {
             case (is_array($arr) && count($arr) == 4):
                 $isTitleNotEmpty = $this->isValueNotEmpty($arr['title'], Message::EMPTY_TITLE);
                 $isTitlePatternValid = $this->isPatternValueMatch(StringPattern::FORMAT, $arr['title'], Message::WRONG_FORMAT_FOR_TITLE);
@@ -98,14 +98,12 @@ class ValidateDataValueService
                 $isCategoryPatternValid = $this->isPatternValueMatch(StringPattern::FORMAT, $arr['category'], Message::WRONG_FORMAT_FOR_CATEGORY);
 
 
-                if($isTitlePatternValid && $isTitleNotEmpty && $isContentPatternValid && $isContentNotEmpty && $isTagsPatternValid && $isTagsNotEmpty && $isCategoryPatternValid && $isCategoryNotEmpty) {
+                if ($isTitlePatternValid && $isTitleNotEmpty && $isContentPatternValid && $isContentNotEmpty && $isTagsPatternValid && $isTagsNotEmpty && $isCategoryPatternValid && $isCategoryNotEmpty) {
                     return true;
                 }
                 return false;
-            default:
-                throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, Message::NOT_ALL_FIELDS_FILLED);
         }
-
+        return null;
     }
 
 
