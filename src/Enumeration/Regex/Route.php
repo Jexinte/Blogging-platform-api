@@ -17,5 +17,6 @@ namespace Enumeration\Regex;
 enum Route: string
 {
     public const CREATE = '/\/blogging\-platform\-api\/public\/index\.php\/create$/';
+    public const UPDATE = '/\/blogging\-platform\-api\/public\/index\.php\/update\/\d+$/';
 
 }

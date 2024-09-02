@@ -17,5 +17,6 @@ namespace Enumeration\RequestMethod;
 enum Method: string
 {
     public const POST = 'POST';
+    public const PUT = "PUT";
 
 }

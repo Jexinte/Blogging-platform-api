@@ -44,6 +44,10 @@ class Router
                 $this->postController->create($this->request->uri(), stream_get_contents($input));
                 http_response_code(HttpStatus::CREATED);
                 break;
+            case Method::PUT:
+                $this->postController->update($this->request->uri(), stream_get_contents($input));
+                http_response_code(HttpStatus::OK);
+                break;
 
         }
 
