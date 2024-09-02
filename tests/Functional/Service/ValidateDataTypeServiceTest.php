@@ -11,7 +11,7 @@ use Enumeration\Message\Field as Message;
  * PHP version 8.
  *
  * @category tests\Functional\Service
- * @package  ValidateDataTypeService
+ * @package  ValidateDataTypeServiceTest
  * @author   Yokke <mdembelepro@gmail.com>
  * @license  ISC License
  * @link     https://github.com/Jexinte/Blogging-platform-api
