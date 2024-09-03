@@ -66,7 +66,7 @@ class PostController
     {
         $this->processDataForService->getOne($uri);
     }
-   
+
     public function findAll(): void
     {
         $this->processDataForService->findAll();

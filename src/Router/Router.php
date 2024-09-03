@@ -55,10 +55,10 @@ class Router
                 http_response_code(HttpStatus::NO_CONTENT);
                 break;
             case Method::GET:
-                if(preg_match(Route::FIND_ALL,$this->request->uri())) {
+                if (preg_match(Route::FIND_ALL, $this->request->uri())) {
 
                     $this->postController->findAll();
-                } else if(preg_match(Route::GET_ONE,$this->request->uri())){
+                } elseif (preg_match(Route::GET_ONE, $this->request->uri())) {
                     $this->postController->getOne($this->request->uri());
                 }
                 break;

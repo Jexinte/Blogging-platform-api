@@ -25,8 +25,8 @@ interface PostCrud
      * Summary of findAll
      * @return array<string>|bool
      */
-    public function findAll():array|bool;
-    
+    public function findAll(): array|bool;
+
     /**
      * Summary of findBy
      * @param int $id
@@ -137,7 +137,7 @@ class PostRepository
      * Summary of findAll
      * @return array<string>|bool
      */
-    public function findAll():array|bool
+    public function findAll(): array|bool
     {
         $dbConnect = $this->db->connect();
         $req = $dbConnect->prepare('SELECT * FROM post');
