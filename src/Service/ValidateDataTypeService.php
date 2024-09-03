@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Service;
 
-use Exceptions\ValidationException;
+use Exception;
 use Enumeration\Status\HttpStatus;
 use Enumeration\Message\Field as Message;
 
@@ -20,14 +20,8 @@ use Enumeration\Message\Field as Message;
 
 class ValidateDataTypeService
 {
-    /**
-     * Summary of __construct
-     * @param \Exceptions\ValidationException $validationException
-     */
-    public function __construct(private ValidationException $validationException)
-    {
 
-    }
+
 
 
     /**
@@ -41,7 +35,7 @@ class ValidateDataTypeService
             case is_array($arr["tags"]):
                 return true;
             default:
-                throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, Message::TAGS_IS_NOT_AN_ARRAY);
+                throw new Exception(Message::TAGS_IS_NOT_AN_ARRAY,HttpStatus::BAD_REQUEST);
         }
     }
 
@@ -57,19 +51,19 @@ class ValidateDataTypeService
             case is_string($value):
                 return true;
             default:
-                throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, $exceptionMessage);
+                throw new Exception($exceptionMessage,HttpStatus::BAD_REQUEST);
         }
     }
 
     /**
      * Summary of isAllValuesTypesAreValids
      * @param string $json
-     * @return null|bool
+     * @return bool
      */
-    public function isAllValuesTypesAreValids(string $json): ?bool
+    public function isAllValuesTypesAreValids(string $json):bool
     {
         $arr = json_decode($json, true);
-
+        $status = false;
         switch (true) {
             case (is_array($arr) && count($arr) == 4):
                 $isTitleAValidString = $this->isValueAString($arr['title'], Message::TITLE_IS_NOT_A_STRING);
@@ -78,11 +72,10 @@ class ValidateDataTypeService
                 $isCategoryAValidString = $this->isValueAString($arr["category"], Message::CATEGORY_IS_NOT_A_STRING);
 
                 if ($isTitleAValidString && $isContentAValidString && $isTagsAValidArray && $isCategoryAValidString) {
-                    return true;
+                    $status = true;
                 }
-                return false;
         }
-        return null;
+        return $status;
     }
 
 }

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Service;
 
+use Exception;
 use Entity\Post;
 use Enumeration\Message\Uri;
 use Enumeration\Regex\Route;
 use Repository\PostRepository;
 use Enumeration\Status\HttpStatus;
-use Exceptions\ValidationException;
 use Enumeration\Message\Field as Message;
 
 /**
@@ -28,10 +28,9 @@ class ProcessDataForService
      * Summary of __construct
      * @param \Service\ValidateDataTypeService $validateDataTypeService
      * @param \Service\ValidateDataValueService $validateDataValueService
-     * @param \Exceptions\ValidationException $validationException
      * @param \Repository\PostRepository $postRepository
      */
-    public function __construct(private ValidateDataTypeService $validateDataTypeService, private ValidateDataValueService $validateDataValueService, private ValidationException $validationException, private PostRepository $postRepository)
+    public function __construct(private ValidateDataTypeService $validateDataTypeService, private ValidateDataValueService $validateDataValueService,private PostRepository $postRepository)
     {
 
     }
@@ -48,7 +47,7 @@ class ProcessDataForService
         if (preg_match($pattern, $uri)) {
             return true;
         }
-        throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, $message);
+        throw new Exception($message,HttpStatus::BAD_REQUEST);
 
     }
 
@@ -67,7 +66,8 @@ class ProcessDataForService
             $post = new Post($dataFromJson['title'], $dataFromJson['content'], $dataFromJson['category'], $dataFromJson['tags']);
             return $post;
         }
-        throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, Message::ALL_FIELDS_MUST_BE_FILLED);
+
+        throw new Exception(Message::ALL_FIELDS_MUST_BE_FILLED,HttpStatus::BAD_REQUEST);
 
     }
 
@@ -107,31 +107,30 @@ class ProcessDataForService
     public function update(string $uri, string $json)
     {
         $post = $this->validator($uri, $json, Route::UPDATE, Uri::UPDATE_WRONG_FORMAT);
-
         if (is_object($post)) {
-            $lastPostOfSlash = strrpos($uri,'/');
-            $id = intval(substr($uri,$lastPostOfSlash + 1));
+            $lastPostOfSlash = strrpos($uri, '/');
+            $id = intval(substr($uri, $lastPostOfSlash + 1));
             $postFromDbBasedOnIdFromTheUri = $this->postRepository->findBy($id);
 
-            switch(true) {
+            switch (true) {
                 case is_array($postFromDbBasedOnIdFromTheUri):
-                    $this->postRepository->update($post,$id);
+                    $this->postRepository->update($post, $id);
 
                     $output = fopen('php://output', 'w');
 
                     $postUpdated = $this->postRepository->findBy($id);
                     $postUpdated['created_at'] = implode('T', explode(' ', $postUpdated['created_at'])).'Z';
                     $postUpdated['updated_at'] = implode('T', explode(' ', $postUpdated['updated_at'])).'Z';
-        
+
                     fwrite($output, json_encode($postUpdated));
                     fclose($output);
 
                     break;
 
                 default:
-                throw $this->validationException->setTypeAndValueOfException(HttpStatus::NOT_FOUND,"The resource with the id $id do not exist !");
+                    throw new Exception ("The resource with the id $id do not exist !",HttpStatus::NOT_FOUND);
             }
-            
+
         }
     }
 
