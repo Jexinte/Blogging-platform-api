@@ -47,6 +47,10 @@ class Router
                 $this->postController->update($this->request->uri(), stream_get_contents($input));
                 http_response_code(HttpStatus::OK);
                 break;
+            case Method::DELETE:
+                $this->postController->delete($this->request->uri());
+                http_response_code(HttpStatus::NO_CONTENT);
+                break;
 
         }
 

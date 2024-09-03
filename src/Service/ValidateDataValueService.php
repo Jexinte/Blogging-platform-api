@@ -24,6 +24,7 @@ class ValidateDataValueService
     /**
      * Summary of checkTagsPatternValues
      * @param array<array<string>> $tags
+     * @throws \Exception
      * @return bool
      */
     public function checkTagsPatternValues(array $tags = null): bool
@@ -42,6 +43,7 @@ class ValidateDataValueService
      * @param string $pattern
      * @param mixed $value
      * @param string $exceptionMessage
+     * @throws \Exception
      * @return bool
      */
     public function isPatternValueMatch(string $pattern, mixed $value, string $exceptionMessage): bool
@@ -57,6 +59,7 @@ class ValidateDataValueService
      * Summary of isValueNotEmpty
      * @param mixed $value
      * @param string $exceptionMessage
+     * @throws \Exception
      * @return bool
      */
     public function isValueNotEmpty(mixed $value, string $exceptionMessage): bool

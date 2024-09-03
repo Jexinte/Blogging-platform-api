@@ -51,5 +51,10 @@ class PostController
         $this->processDataForService->update($uri, $json);
     }
 
+    public function delete(string $uri): void
+    {
+        $this->processDataForService->delete($uri);
+    }
+
 
 }

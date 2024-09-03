@@ -23,6 +23,7 @@ class ValidateDataTypeService
     /**
      * Summary of isTagsAnArray
      * @param array<mixed> $arr
+     * @throws \Exception
      * @return bool
      */
     public function isTagsAnArray(array $arr): bool
@@ -39,6 +40,7 @@ class ValidateDataTypeService
      * Summary of isValueAString
      * @param mixed $value
      * @param string $exceptionMessage
+     * @throws \Exception
      * @return bool
      */
     public function isValueAString(mixed $value, string $exceptionMessage): bool
