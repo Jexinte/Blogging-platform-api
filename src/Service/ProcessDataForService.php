@@ -155,4 +155,29 @@ class ProcessDataForService
         throw new Exception("The resource with the id $id do not exist !", HttpStatus::NOT_FOUND);
     }
 
+    /**
+     * Summary of getOne
+     * @param string $uri
+     * @throws \Exception
+     * @return void
+     */
+    public function getOne(string $uri): void
+    {
+        $lastPostOfSlash = strrpos($uri, '/');
+        $id = intval(substr($uri, $lastPostOfSlash + 1));
+        $post = $this->postRepository->findBy($id);
+        if (is_array($post)) {
+
+            $output = fopen('php://output', 'w');
+
+            $post['created_at'] = implode('T', explode(' ', $post['created_at'])).'Z';
+            $post['updated_at'] = implode('T', explode(' ', $post['updated_at'])).'Z';
+
+            fwrite($output, json_encode($post));
+            fclose($output);
+            return;
+        }
+        throw new Exception("The resource with the id $id do not exist !", HttpStatus::NOT_FOUND);
+    }
+
 }

@@ -3,9 +3,12 @@
 namespace Router;
 
 use Util\Request;
+use Enumeration\Message\Uri;
+use Enumeration\Regex\Route;
 use Controller\PostController;
-use Enumeration\RequestMethod\Method;
 use Enumeration\Status\HttpStatus;
+use Service\ProcessDataForService;
+use Enumeration\RequestMethod\Method;
 
 /**
  * PHP version 8.
@@ -24,7 +27,7 @@ class Router
      * @param \Util\Request $request
      * @param \Controller\PostController $postController
      */
-    public function __construct(private Request $request, private PostController $postController)
+    public function __construct(private Request $request, private PostController $postController, private ProcessDataForService $processDataForService)
     {
     }
 
@@ -50,6 +53,11 @@ class Router
             case Method::DELETE:
                 $this->postController->delete($this->request->uri());
                 http_response_code(HttpStatus::NO_CONTENT);
+                break;
+            case Method::GET:
+                if ($this->processDataForService->isTheRightUri($this->request->uri(), Route::GET_ONE, Uri::GET_ONE_WRONG_FORMAT)) {
+                    $this->postController->getOne($this->request->uri());
+                }
                 break;
 
         }

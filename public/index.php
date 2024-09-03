@@ -26,7 +26,7 @@ $processDataForService = new ProcessDataForService($validateDataTypeService,$val
 
 $postController = new PostController($processDataForService);
 
-$router = new Router($request,$postController);
+$router = new Router($request,$postController,$processDataForService);
 
 try{
     $router->resolveAction();

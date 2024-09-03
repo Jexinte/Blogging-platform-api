@@ -19,5 +19,6 @@ enum Method: string
     public const POST = 'POST';
     public const PUT = "PUT";
     public const DELETE = "DELETE";
+    public const GET = "GET";
 
 }
