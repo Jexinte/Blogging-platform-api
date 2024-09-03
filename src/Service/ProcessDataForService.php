@@ -30,7 +30,7 @@ class ProcessDataForService
      * @param \Service\ValidateDataValueService $validateDataValueService
      * @param \Repository\PostRepository $postRepository
      */
-    public function __construct(private ValidateDataTypeService $validateDataTypeService, private ValidateDataValueService $validateDataValueService,private PostRepository $postRepository)
+    public function __construct(private ValidateDataTypeService $validateDataTypeService, private ValidateDataValueService $validateDataValueService, private PostRepository $postRepository)
     {
 
     }
@@ -47,7 +47,7 @@ class ProcessDataForService
         if (preg_match($pattern, $uri)) {
             return true;
         }
-        throw new Exception($message,HttpStatus::BAD_REQUEST);
+        throw new Exception($message, HttpStatus::BAD_REQUEST);
 
     }
 
@@ -67,7 +67,7 @@ class ProcessDataForService
             return $post;
         }
 
-        throw new Exception(Message::ALL_FIELDS_MUST_BE_FILLED,HttpStatus::BAD_REQUEST);
+        throw new Exception(Message::ALL_FIELDS_MUST_BE_FILLED, HttpStatus::BAD_REQUEST);
 
     }
 
@@ -128,7 +128,7 @@ class ProcessDataForService
                     break;
 
                 default:
-                    throw new Exception ("The resource with the id $id do not exist !",HttpStatus::NOT_FOUND);
+                    throw new Exception("The resource with the id $id do not exist !", HttpStatus::NOT_FOUND);
             }
 
         }

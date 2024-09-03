@@ -13,7 +13,6 @@
             "Config\\": "config/",
             "Controller\\":"src/Controller/",
             "Entity\\": "src/Entity",
-            "Exceptions\\":"src/Exceptions/",
             "Enumeration\\": "src/Enumeration/",
             "Enumeration\\Regex\\": "src/Enumeration/Regex/",
             "Enumeration\\Message\\": "src/Enumeration/Message/",

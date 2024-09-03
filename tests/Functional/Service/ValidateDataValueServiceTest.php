@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Exceptions\ValidationException;
 use PHPUnit\Framework\TestCase;
 use Service\ValidateDataValueService;
 use Enumeration\Message\Field as Message;
@@ -21,7 +20,6 @@ use Enumeration\Regex\StringPattern;
 class ValidateDataValueServiceTest extends TestCase
 {
     private ValidateDataValueService $validateDataValueService;
-    private ValidationException $validationException;
 
     /**
     * Summary of setUp
@@ -30,8 +28,7 @@ class ValidateDataValueServiceTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->validationException = new ValidationException();
-        $this->validateDataValueService = new ValidateDataValueService($this->validationException);
+        $this->validateDataValueService = new ValidateDataValueService();
     }
 
     /**
@@ -51,7 +48,7 @@ class ValidateDataValueServiceTest extends TestCase
     public function testShouldThrownAnExceptionIfTagsPatternIsNotRespected(): void
     {
         $arr = ["title" => "Title","content" => "Example Content","tags" => ["test"],"category" => "Category"];
-        $this->expectException(ValidationException::class);
+        $this->expectException(Exception::class);
         $this->validateDataValueService->checkTagsPatternValues($arr);
     }
 
@@ -64,9 +61,9 @@ class ValidateDataValueServiceTest extends TestCase
         try {
             $arr = ["title" => "Title","content" => "Example Content","tags" => ["test"],"category" => "Category"];
             $this->validateDataValueService->checkTagsPatternValues($arr);
-        } catch (ValidationException $e) {
-            $actualMessage = current($e->getErrors());
-            $this->assertSame(Message::WRONG_FORMAT_FOR_TAGS, $actualMessage);
+        } catch (Exception $e) {
+
+            $this->assertSame(Message::WRONG_FORMAT_FOR_TAGS, $e->getMessage());
         }
     }
 
@@ -87,7 +84,7 @@ class ValidateDataValueServiceTest extends TestCase
     public function testShouldThrownAnExceptionIfTitlePatternValueIsNotRespected(): void
     {
         $arr = ["title" => "title","content" => "Example Content","tags" => ["Test"],"category" => "Category"];
-        $this->expectException(ValidationException::class);
+        $this->expectException(Exception::class);
         $this->validateDataValueService->isPatternValueMatch(StringPattern::FORMAT, $arr['title'], Message::WRONG_FORMAT_FOR_TITLE);
     }
 
@@ -101,9 +98,9 @@ class ValidateDataValueServiceTest extends TestCase
         $arr = ["title" => "title","content" => "Example Content","tags" => ["Test"],"category" => "Category"];
         try {
             $this->validateDataValueService->isPatternValueMatch(StringPattern::FORMAT, $arr['title'], Message::WRONG_FORMAT_FOR_TITLE);
-        } catch (ValidationException $e) {
-            $actualMessage = current($e->getErrors());
-            $this->assertSame(Message::WRONG_FORMAT_FOR_TITLE, $actualMessage);
+        } catch (Exception $e) {
+
+            $this->assertSame(Message::WRONG_FORMAT_FOR_TITLE, $e->getMessage());
         }
     }
 
@@ -124,7 +121,7 @@ class ValidateDataValueServiceTest extends TestCase
     public function testShouldThrownAnExceptionIfContentPatternValueIsNotRespected(): void
     {
         $arr = ["title" => "Title","content" => "content","tags" => ["Test"],"category" => "Category"];
-        $this->expectException(ValidationException::class);
+        $this->expectException(Exception::class);
         $this->validateDataValueService->isPatternValueMatch(StringPattern::FORMAT, $arr['content'], Message::WRONG_FORMAT_FOR_CONTENT);
     }
 
@@ -137,9 +134,9 @@ class ValidateDataValueServiceTest extends TestCase
         $arr = ["title" => "Title","content" => "content","tags" => ["Test"],"category" => "Category"];
         try {
             $this->validateDataValueService->isPatternValueMatch(StringPattern::FORMAT, $arr['content'], Message::WRONG_FORMAT_FOR_CONTENT);
-        } catch (ValidationException $e) {
-            $actualMessage = current($e->getErrors());
-            $this->assertSame(Message::WRONG_FORMAT_FOR_CONTENT, $actualMessage);
+        } catch (Exception $e) {
+
+            $this->assertSame(Message::WRONG_FORMAT_FOR_CONTENT, $e->getMessage());
         }
     }
 
@@ -160,7 +157,7 @@ class ValidateDataValueServiceTest extends TestCase
     public function testShouldThrownAnExceptionIfCategoryPatternValueIsNotRespected(): void
     {
         $arr = ["title" => "Title","content" => "content","tags" => ["Test"],"category" => "category"];
-        $this->expectException(ValidationException::class);
+        $this->expectException(Exception::class);
         $this->validateDataValueService->isPatternValueMatch(StringPattern::FORMAT, $arr['category'], Message::WRONG_FORMAT_FOR_CATEGORY);
     }
 
@@ -173,9 +170,9 @@ class ValidateDataValueServiceTest extends TestCase
         $arr = ["title" => "Title","content" => "content","tags" => ["Test"],"category" => "category"];
         try {
             $this->validateDataValueService->isPatternValueMatch(StringPattern::FORMAT, $arr['category'], Message::WRONG_FORMAT_FOR_CATEGORY);
-        } catch (ValidationException $e) {
-            $actualMessage = current($e->getErrors());
-            $this->assertSame(Message::WRONG_FORMAT_FOR_CATEGORY, $actualMessage);
+        } catch (Exception $e) {
+
+            $this->assertSame(Message::WRONG_FORMAT_FOR_CATEGORY, $e->getMessage());
         }
     }
 
@@ -194,7 +191,7 @@ class ValidateDataValueServiceTest extends TestCase
      */
     public function testShouldThrownAnExceptionIfValueIsEmpty(): void
     {
-        $this->expectException(ValidationException::class);
+        $this->expectException(Exception::class);
         $this->validateDataValueService->isValueNotEmpty("", "no need to test the message there");
     }
 
@@ -206,9 +203,9 @@ class ValidateDataValueServiceTest extends TestCase
     {
         try {
             $this->validateDataValueService->isValueNotEmpty("", "the value is empty !");
-        } catch (ValidationException $e) {
-            $actualMessage = current($e->getErrors());
-            $this->assertSame("the value is empty !", $actualMessage);
+        } catch (Exception $e) {
+
+            $this->assertSame("the value is empty !", $e->getMessage());
         }
     }
 

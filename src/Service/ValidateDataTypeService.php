@@ -20,10 +20,6 @@ use Enumeration\Message\Field as Message;
 
 class ValidateDataTypeService
 {
-
-
-
-
     /**
      * Summary of isTagsAnArray
      * @param array<mixed> $arr
@@ -35,7 +31,7 @@ class ValidateDataTypeService
             case is_array($arr["tags"]):
                 return true;
             default:
-                throw new Exception(Message::TAGS_IS_NOT_AN_ARRAY,HttpStatus::BAD_REQUEST);
+                throw new Exception(Message::TAGS_IS_NOT_AN_ARRAY, HttpStatus::BAD_REQUEST);
         }
     }
 
@@ -51,7 +47,7 @@ class ValidateDataTypeService
             case is_string($value):
                 return true;
             default:
-                throw new Exception($exceptionMessage,HttpStatus::BAD_REQUEST);
+                throw new Exception($exceptionMessage, HttpStatus::BAD_REQUEST);
         }
     }
 
@@ -60,7 +56,7 @@ class ValidateDataTypeService
      * @param string $json
      * @return bool
      */
-    public function isAllValuesTypesAreValids(string $json):bool
+    public function isAllValuesTypesAreValids(string $json): bool
     {
         $arr = json_decode($json, true);
         $status = false;
