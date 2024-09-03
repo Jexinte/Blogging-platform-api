@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Exceptions\ValidationException;
 use PHPUnit\Framework\TestCase;
 use Service\ValidateDataTypeService;
 use Enumeration\Message\Field as Message;
@@ -20,7 +19,6 @@ use Enumeration\Message\Field as Message;
 class ValidateDataTypeServiceTest extends TestCase
 {
     private ValidateDataTypeService $validateDataTypeService;
-    private ValidationException $validationException;
 
     /**
     * Summary of setUp
@@ -29,8 +27,7 @@ class ValidateDataTypeServiceTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->validationException = new ValidationException();
-        $this->validateDataTypeService = new ValidateDataTypeService($this->validationException);
+        $this->validateDataTypeService = new ValidateDataTypeService();
     }
 
     /**
@@ -48,7 +45,7 @@ class ValidateDataTypeServiceTest extends TestCase
      */
     public function testShouldThrowAnExceptionIfAnArrayIsNotSupplied(): void
     {
-        $this->expectException(ValidationException::class);
+        $this->expectException(Exception::class);
         $this->validateDataTypeService->isTagsAnArray(["tags" => ""]);
     }
     /**
@@ -60,9 +57,8 @@ class ValidateDataTypeServiceTest extends TestCase
 
         try {
             $this->validateDataTypeService->isTagsAnArray(["tags" => ""]);
-        } catch (ValidationException $e) {
-            $actualMessage = current($e->getErrors());
-            $this->assertSame(Message::TAGS_IS_NOT_AN_ARRAY, $actualMessage);
+        } catch (Exception $e) {
+            $this->assertSame(Message::TAGS_IS_NOT_AN_ARRAY, $e->getMessage());
         }
     }
 
@@ -81,7 +77,7 @@ class ValidateDataTypeServiceTest extends TestCase
      */
     public function testShoulThrownAnExceptionIfAStringIsNotSupplied(): void
     {
-        $this->expectException(ValidationException::class);
+        $this->expectException(Exception::class);
         $this->validateDataTypeService->isValueAString(1, 'noNeedExceptionMessageForThisTest');
     }
 
@@ -94,9 +90,8 @@ class ValidateDataTypeServiceTest extends TestCase
 
         try {
             $this->validateDataTypeService->isValueAString(1, "The value is not a string!");
-        } catch (ValidationException $e) {
-            $actualMessage = current($e->getErrors());
-            $this->assertSame("The value is not a string!", $actualMessage);
+        } catch (Exception $e) {
+            $this->assertSame("The value is not a string!", $e->getMessage());
         }
     }
 
@@ -124,10 +119,9 @@ class ValidateDataTypeServiceTest extends TestCase
 
         try {
             $this->validateDataTypeService->isAllValuesTypesAreValids($json);
-        } catch (ValidationException $e) {
+        } catch (Exception $e) {
 
-            $actualMessage = current($e->getErrors());
-            $this->assertSame(Message::TITLE_IS_NOT_A_STRING, $actualMessage);
+            $this->assertSame(Message::TITLE_IS_NOT_A_STRING, $e->getMessage());
         }
 
     }
@@ -143,9 +137,8 @@ class ValidateDataTypeServiceTest extends TestCase
             $data = ["title" => "Title","content" => 1,"tags" => ["Test"],"category" => "Category"];
             $json = json_encode($data);
             $this->validateDataTypeService->isAllValuesTypesAreValids($json);
-        } catch (ValidationException $e) {
-            $actualMessage = current($e->getErrors());
-            $this->assertSame(Message::CONTENT_IS_NOT_A_STRING, $actualMessage);
+        } catch (Exception $e) {
+            $this->assertSame(Message::CONTENT_IS_NOT_A_STRING, $e->getMessage());
         }
     }
 
@@ -160,9 +153,8 @@ class ValidateDataTypeServiceTest extends TestCase
             $data = ["title" => "Title","content" => "Example Content","tags" => ["Test"],"category" => 1];
             $json = json_encode($data);
             $this->validateDataTypeService->isAllValuesTypesAreValids($json);
-        } catch (ValidationException $e) {
-            $actualMessage = current($e->getErrors());
-            $this->assertSame(Message::CATEGORY_IS_NOT_A_STRING, $actualMessage);
+        } catch (Exception $e) {
+            $this->assertSame(Message::CATEGORY_IS_NOT_A_STRING, $e->getMessage());
         }
     }
 

@@ -8,7 +8,6 @@ use Config\DatabaseConnection;
 use Repository\PostRepository;
 use PHPUnit\Framework\TestCase;
 use Service\ProcessDataForService;
-use Exceptions\ValidationException;
 use Service\ValidateDataTypeService;
 use Service\ValidateDataValueService;
 use Enumeration\Message\Field as Message;
@@ -28,12 +27,13 @@ class ProcessDataForServiceTest extends TestCase
 {
     private ValidateDataTypeService $validateDataTypeService;
     private ValidateDataValueService $validateDataValueService;
-    private ValidationException $validationException;
     private PostRepository $postRepository;
     private DatabaseConnection $database;
     private ProcessDataForService $processDataForService;
 
     public const URI_CREATE = "/blogging-platform-api/public/index.php/create";
+    public const BAD_URI_CREATE = "/blogging-platform-api/public/index.php";
+
     public const URI_UPDATE = "/blogging-platform-api/public/index.php/update/1";
     public const BAD_URI_UPDATE = "/blogging-platform-api/public/index.php/update";
 
@@ -44,12 +44,11 @@ class ProcessDataForServiceTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->validationException = new ValidationException();
-        $this->validateDataTypeService = new ValidateDataTypeService($this->validationException);
-        $this->validateDataValueService = new ValidateDataValueService($this->validationException);
+        $this->validateDataTypeService = new ValidateDataTypeService();
+        $this->validateDataValueService = new ValidateDataValueService();
         $this->database = new DatabaseConnection(ConnectionInformation::HOST, ConnectionInformation::DB_NAME, ConnectionInformation::USERNAME, ConnectionInformation::PASSWORD);
         $this->postRepository = new PostRepository($this->database);
-        $this->processDataForService = new ProcessDataForService($this->validateDataTypeService, $this->validateDataValueService, $this->validationException, $this->postRepository);
+        $this->processDataForService = new ProcessDataForService($this->validateDataTypeService, $this->validateDataValueService, $this->postRepository);
     }
 
     /**
@@ -69,8 +68,8 @@ class ProcessDataForServiceTest extends TestCase
     public function testShouldThrownAnExceptionIfTheUriIsWronglySuppliedWhenCreatingAPost(): void
     {
 
-        $this->expectException(ValidationException::class);
-        $this->processDataForService->isTheRightUri("bad url", Route::CREATE, Uri::CREATE_WRONG_FORMAT);
+        $this->expectException(Exception::class);
+        $this->processDataForService->isTheRightUri(self::BAD_URI_CREATE, Route::CREATE, Uri::CREATE_WRONG_FORMAT);
     }
 
     /**
@@ -81,10 +80,9 @@ class ProcessDataForServiceTest extends TestCase
     {
 
         try {
-            $this->processDataForService->isTheRightUri("bad url", Route::CREATE, Uri::CREATE_WRONG_FORMAT);
-        } catch (ValidationException $e) {
-            $actualMessage = current($e->getErrors());
-            $this->assertSame(Uri::CREATE_WRONG_FORMAT, $actualMessage);
+            $this->processDataForService->isTheRightUri(self::BAD_URI_CREATE, Route::CREATE, Uri::CREATE_WRONG_FORMAT);
+        } catch (Exception $e) {
+            $this->assertSame(Uri::CREATE_WRONG_FORMAT, $e->getMessage());
         }
 
     }
@@ -106,7 +104,7 @@ class ProcessDataForServiceTest extends TestCase
     public function testShoulThrownAnExceptionIfNothingAtAllIsSentWhenCreatingAPost(): void
     {
         $json = [];
-        $this->expectException(ValidationException::class);
+        $this->expectException(Exception::class);
         $this->processDataForService->validator(self::URI_CREATE, json_encode($json), Route::CREATE, Uri::CREATE_WRONG_FORMAT);
     }
 
@@ -119,9 +117,8 @@ class ProcessDataForServiceTest extends TestCase
         $json = [];
         try {
             $this->processDataForService->validator(self::URI_CREATE, json_encode($json), Route::CREATE, Uri::CREATE_WRONG_FORMAT);
-        } catch (ValidationException $e) {
-            $actualMessage = current($e->getErrors());
-            $this->assertSame(Message::ALL_FIELDS_MUST_BE_FILLED, $actualMessage);
+        } catch (Exception $e) {
+            $this->assertSame(Message::ALL_FIELDS_MUST_BE_FILLED, $e->getMessage());
         }
 
     }
@@ -143,7 +140,7 @@ class ProcessDataForServiceTest extends TestCase
     public function testShouldThrownAnExceptionIfTheUriIsWronglySuppliedWhenUpdatingAPost(): void
     {
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(Exception::class);
         $this->processDataForService->isTheRightUri(self::BAD_URI_UPDATE, Route::UPDATE, Uri::UPDATE_WRONG_FORMAT);
     }
 
@@ -156,9 +153,8 @@ class ProcessDataForServiceTest extends TestCase
 
         try {
             $this->processDataForService->isTheRightUri(self::BAD_URI_UPDATE, Route::UPDATE, Uri::UPDATE_WRONG_FORMAT);
-        } catch (ValidationException $e) {
-            $actualMessage = current($e->getErrors());
-            $this->assertSame(Uri::UPDATE_WRONG_FORMAT, $actualMessage);
+        } catch (Exception $e) {
+            $this->assertSame(Uri::UPDATE_WRONG_FORMAT, $e->getMessage());
         }
 
     }
@@ -180,7 +176,7 @@ class ProcessDataForServiceTest extends TestCase
     public function testShoulThrownAnExceptionIfNothingAtAllIsSentWhenUPDATINGAPost(): void
     {
         $json = [];
-        $this->expectException(ValidationException::class);
+        $this->expectException(Exception::class);
         $this->processDataForService->validator(self::URI_UPDATE, json_encode($json), Route::UPDATE, Uri::UPDATE_WRONG_FORMAT);
     }
 
@@ -194,9 +190,8 @@ class ProcessDataForServiceTest extends TestCase
         $json = [];
         try {
             $this->processDataForService->validator(self::URI_UPDATE, json_encode($json), Route::UPDATE, Uri::UPDATE_WRONG_FORMAT);
-        } catch (ValidationException $e) {
-            $actualMessage = current($e->getErrors());
-            $this->assertSame(Message::ALL_FIELDS_MUST_BE_FILLED, $actualMessage);
+        } catch (Exception $e) {
+            $this->assertSame(Message::ALL_FIELDS_MUST_BE_FILLED, $e->getMessage());
         }
 
     }

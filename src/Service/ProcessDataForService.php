@@ -30,7 +30,7 @@ class ProcessDataForService
      * @param \Service\ValidateDataValueService $validateDataValueService
      * @param \Repository\PostRepository $postRepository
      */
-    public function __construct(private ValidateDataTypeService $validateDataTypeService, private ValidateDataValueService $validateDataValueService,private PostRepository $postRepository)
+    public function __construct(private ValidateDataTypeService $validateDataTypeService, private ValidateDataValueService $validateDataValueService, private PostRepository $postRepository)
     {
 
     }
@@ -40,6 +40,7 @@ class ProcessDataForService
      * @param string $uri
      * @param string $pattern
      * @param string $message
+     * @throws \Exception
      * @return bool
      */
     public function isTheRightUri(string $uri, string $pattern, string $message): bool
@@ -47,7 +48,7 @@ class ProcessDataForService
         if (preg_match($pattern, $uri)) {
             return true;
         }
-        throw new Exception($message,HttpStatus::BAD_REQUEST);
+        throw new Exception($message, HttpStatus::BAD_REQUEST);
 
     }
 
@@ -57,6 +58,7 @@ class ProcessDataForService
      * @param string $json
      * @param string $regexPattern
      * @param string $uriMessageWhenWrongFormat
+     * @throws \Exception
      * @return \Entity\Post
      */
     public function validator(string $uri, string $json, string $regexPattern, string $uriMessageWhenWrongFormat): Post
@@ -67,7 +69,7 @@ class ProcessDataForService
             return $post;
         }
 
-        throw new Exception(Message::ALL_FIELDS_MUST_BE_FILLED,HttpStatus::BAD_REQUEST);
+        throw new Exception(Message::ALL_FIELDS_MUST_BE_FILLED, HttpStatus::BAD_REQUEST);
 
     }
 
@@ -77,7 +79,7 @@ class ProcessDataForService
      * @param string $json
      * @return void
      */
-    public function post(string $uri, string $json)
+    public function post(string $uri, string $json): void
     {
         $post = $this->validator($uri, $json, Route::CREATE, Uri::CREATE_WRONG_FORMAT);
 
@@ -102,9 +104,10 @@ class ProcessDataForService
      * Summary of update
      * @param string $uri
      * @param string $json
+     * @throws \Exception
      * @return void
      */
-    public function update(string $uri, string $json)
+    public function update(string $uri, string $json): void
     {
         $post = $this->validator($uri, $json, Route::UPDATE, Uri::UPDATE_WRONG_FORMAT);
         if (is_object($post)) {
@@ -128,10 +131,28 @@ class ProcessDataForService
                     break;
 
                 default:
-                    throw new Exception ("The resource with the id $id do not exist !",HttpStatus::NOT_FOUND);
+                    throw new Exception("The resource with the id $id do not exist !", HttpStatus::NOT_FOUND);
             }
 
         }
+    }
+
+    /**
+     * Summary of delete
+     * @param string $uri
+     * @throws \Exception
+     * @return void
+     */
+    public function delete(string $uri): void
+    {
+        $lastPostOfSlash = strrpos($uri, '/');
+        $id = intval(substr($uri, $lastPostOfSlash + 1));
+        $postThatGonnaBeDelete = $this->postRepository->findBy($id);
+        if ($this->isTheRightUri($uri, Route::DELETE, Uri::DELETE_WRONG_FORMAT) && is_array($postThatGonnaBeDelete)) {
+            $this->postRepository->delete($id);
+            return;
+        }
+        throw new Exception("The resource with the id $id do not exist !", HttpStatus::NOT_FOUND);
     }
 
 }

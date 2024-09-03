@@ -136,4 +136,17 @@ class PostRepository
 
         return $post;
     }
+
+    /**
+     * Summary of delete
+     * @param int $id
+     * @return void
+     */
+    public function delete(int $id): void
+    {
+        $dbConnect = $this->db->connect();
+        $req = $dbConnect->prepare('DELETE FROM post WHERE id = :id');
+        $req->bindParam(':id', $id);
+        $req->execute();
+    }
 }

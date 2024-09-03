@@ -21,11 +21,10 @@ use Enumeration\Message\Field as Message;
 
 class ValidateDataValueService
 {
-
-
     /**
      * Summary of checkTagsPatternValues
      * @param array<array<string>> $tags
+     * @throws \Exception
      * @return bool
      */
     public function checkTagsPatternValues(array $tags = null): bool
@@ -35,7 +34,7 @@ class ValidateDataValueService
         if (!in_array(false, $isAllHaveTheSamePattern)) {
             return true;
         }
-        throw new Exception(Message::WRONG_FORMAT_FOR_TAGS,HttpStatus::BAD_REQUEST);
+        throw new Exception(Message::WRONG_FORMAT_FOR_TAGS, HttpStatus::BAD_REQUEST);
     }
 
 
@@ -44,6 +43,7 @@ class ValidateDataValueService
      * @param string $pattern
      * @param mixed $value
      * @param string $exceptionMessage
+     * @throws \Exception
      * @return bool
      */
     public function isPatternValueMatch(string $pattern, mixed $value, string $exceptionMessage): bool
@@ -51,7 +51,7 @@ class ValidateDataValueService
         if (preg_match($pattern, $value)) {
             return true;
         }
-        throw new Exception($exceptionMessage,HttpStatus::BAD_REQUEST);
+        throw new Exception($exceptionMessage, HttpStatus::BAD_REQUEST);
 
     }
 
@@ -59,12 +59,13 @@ class ValidateDataValueService
      * Summary of isValueNotEmpty
      * @param mixed $value
      * @param string $exceptionMessage
+     * @throws \Exception
      * @return bool
      */
     public function isValueNotEmpty(mixed $value, string $exceptionMessage): bool
     {
         if (empty($value)) {
-            throw new Exception($exceptionMessage,HttpStatus::BAD_REQUEST);
+            throw new Exception($exceptionMessage, HttpStatus::BAD_REQUEST);
         }
         return true;
     }
