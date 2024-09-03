@@ -28,4 +28,5 @@ enum Field: string
     public const EMPTY_TAGS = "The tags field cannot be empty !";
     public const EMPTY_CATEGORY = "The category field cannot be empty !";
     public const ALL_FIELDS_MUST_BE_FILLED = "All fields must be filled !";
+    public const ALL_TYPE_FIELDS_MUST_BE_RESPECTED = "All fields must start with an uppercase letter except the tags that need to be in an array before doing it !";
 }

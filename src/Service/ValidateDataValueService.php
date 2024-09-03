@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Service;
 
-use Enumeration\Regex\StringPattern;
+use Exception;
 use Enumeration\Status\HttpStatus;
-use Exceptions\ValidationException;
+use Enumeration\Regex\StringPattern;
 use Enumeration\Message\Field as Message;
 
 /**
@@ -21,14 +21,6 @@ use Enumeration\Message\Field as Message;
 
 class ValidateDataValueService
 {
-    /**
-     * Summary of __construct
-     * @param \Exceptions\ValidationException $validationException
-     */
-    public function __construct(private ValidationException $validationException)
-    {
-
-    }
 
 
     /**
@@ -43,7 +35,7 @@ class ValidateDataValueService
         if (!in_array(false, $isAllHaveTheSamePattern)) {
             return true;
         }
-        throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, Message::WRONG_FORMAT_FOR_TAGS);
+        throw new Exception(Message::WRONG_FORMAT_FOR_TAGS,HttpStatus::BAD_REQUEST);
     }
 
 
@@ -59,7 +51,7 @@ class ValidateDataValueService
         if (preg_match($pattern, $value)) {
             return true;
         }
-        throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, $exceptionMessage);
+        throw new Exception($exceptionMessage,HttpStatus::BAD_REQUEST);
 
     }
 
@@ -72,7 +64,7 @@ class ValidateDataValueService
     public function isValueNotEmpty(mixed $value, string $exceptionMessage): bool
     {
         if (empty($value)) {
-            throw $this->validationException->setTypeAndValueOfException(HttpStatus::BAD_REQUEST, $exceptionMessage);
+            throw new Exception($exceptionMessage,HttpStatus::BAD_REQUEST);
         }
         return true;
     }
@@ -80,12 +72,12 @@ class ValidateDataValueService
     /**
      * Summary of isAllValuesDataAreValids
      * @param string $json
-     * @return null|bool
+     * @return bool
      */
-    public function isAllValuesDataAreValids(string $json): ?bool
+    public function isAllValuesDataAreValids(string $json): bool
     {
         $arr = json_decode($json, true);
-
+        $status = false;
         switch (true) {
             case (is_array($arr) && count($arr) == 4):
                 $isTitleNotEmpty = $this->isValueNotEmpty($arr['title'], Message::EMPTY_TITLE);
@@ -99,11 +91,10 @@ class ValidateDataValueService
 
 
                 if ($isTitlePatternValid && $isTitleNotEmpty && $isContentPatternValid && $isContentNotEmpty && $isTagsPatternValid && $isTagsNotEmpty && $isCategoryPatternValid && $isCategoryNotEmpty) {
-                    return true;
+                    $status = true;
                 }
-                return false;
         }
-        return null;
+        return $status;
     }
 
 
