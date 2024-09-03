@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Enumeration\Date\Format;
 use Enumeration\Message\Uri;
 use Enumeration\Regex\Route;
 use Config\DatabaseConnection;
@@ -194,6 +195,12 @@ class ProcessDataForServiceTest extends TestCase
             $this->assertSame(Message::ALL_FIELDS_MUST_BE_FILLED, $e->getMessage());
         }
 
+    }
+
+    public function testShouldReturnTheSameDate(): void
+    {
+        $date = new DateTime('now');
+        $this->assertSame($date->format(Format::ISO_8601), $this->processDataForService->formatDateTime($date->format(Format::ISO_8601)));
     }
 
 }

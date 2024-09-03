@@ -25,8 +25,8 @@ interface PostCrud
      * Summary of findAll
      * @return array<string>|bool
      */
-    public function findAll():array|bool;
-    
+    public function findAll(): array|bool;
+
     /**
      * Summary of findBy
      * @param int $id
@@ -137,7 +137,7 @@ class PostRepository
      * Summary of findAll
      * @return array<string>|bool
      */
-    public function findAll():array|bool
+    public function findAll(): array|bool
     {
         $dbConnect = $this->db->connect();
         $req = $dbConnect->prepare('SELECT * FROM post');
@@ -173,5 +173,19 @@ class PostRepository
         $req = $dbConnect->prepare('DELETE FROM post WHERE id = :id');
         $req->bindParam(':id', $id);
         $req->execute();
+    }
+
+    /**
+     * Summary of findByParameter
+     * @param string $parameterFromUri
+     * @return array<string>
+     */
+    public function findByParameter(string $parameterFromUri): array
+    {
+        $dbConnect = $this->db->connect();
+        $req = $dbConnect->prepare("SELECT * FROM post WHERE title = '$parameterFromUri' OR content ='$parameterFromUri' OR category = '$parameterFromUri'");
+        $req->execute();
+
+        return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 }
