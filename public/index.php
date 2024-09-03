@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+
+
+
 use Repository\PostRepository;
 use Service\ProcessDataForService;
 use Util\Request;
@@ -29,10 +32,12 @@ $postController = new PostController($processDataForService);
 $router = new Router($request,$postController);
 
 try{
+    ob_start();
+    header('Content-Type: application/json');
     $router->resolveAction();
+    ob_end_flush();
 
 }catch(Exception $e){
     echo json_encode([$e->getCode() => $e->getMessage()]);
     http_response_code($e->getCode());
 }
-header('Content-Type: application/json');

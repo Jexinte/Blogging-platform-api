@@ -15,7 +15,9 @@ namespace Enumeration\Message;
  */
 enum Uri: string
 {
-    public const CREATE_WRONG_FORMAT = "In order to create a blog post specify the following URI : localhost/blogging-platform-api/public/index.php/create";
-    public const UPDATE_WRONG_FORMAT = "In order to update a blog post specify the following URI : localhost/blogging-platform-api/public/index.php/update/idOfThePost";
-    public const DELETE_WRONG_FORMAT = "In order to delete a blog post specify the following URI without a body content : localhost/blogging-platform-api/public/index.php/delete/idOfThePost";
+    public const CREATE_WRONG_FORMAT = "In order to create a blog post the endpoint has to end with the word create";
+    public const UPDATE_WRONG_FORMAT = "In order to update a blog post the endpoint has to end with an ID";
+    public const DELETE_WRONG_FORMAT = "In order to delete a blog post the endpoint has to end with an ID";
+    public const GET_ONE_WRONG_FORMAT = "In order to get a blog post the endpoint has to end with an ID";
+    public const FIND_ALL_WRONG_FORMAT = "In order to get all blog posts the endpoint has to end with posts";
 }

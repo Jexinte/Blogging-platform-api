@@ -22,11 +22,24 @@ interface PostCrud
     public function create(Post $post): bool;
 
     /**
+     * Summary of findAll
+     * @return array<string>|bool
+     */
+    public function findAll():array|bool;
+    
+    /**
      * Summary of findBy
      * @param int $id
      * @return array<string>|bool
      */
     public function findBy(int $id): array|bool;
+
+    /**
+     * Summary of delete
+     * @param int $id
+     * @return void
+     */
+    public function delete(int $id): void;
 }
 
 /**
@@ -120,6 +133,18 @@ class PostRepository
     }
 
 
+    /**
+     * Summary of findAll
+     * @return array<string>|bool
+     */
+    public function findAll():array|bool
+    {
+        $dbConnect = $this->db->connect();
+        $req = $dbConnect->prepare('SELECT * FROM post');
+        $req->execute();
+        $posts = $req->fetchAll(PDO::FETCH_ASSOC);
+        return $posts;
+    }
     /**
      * Summary of findBy
      * @param int $id

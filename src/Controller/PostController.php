@@ -51,9 +51,25 @@ class PostController
         $this->processDataForService->update($uri, $json);
     }
 
+
     public function delete(string $uri): void
     {
         $this->processDataForService->delete($uri);
+    }
+
+    /**
+     * Summary of getOne
+     * @param string $uri
+     * @return void
+     */
+    public function getOne(string $uri): void
+    {
+        $this->processDataForService->getOne($uri);
+    }
+   
+    public function findAll(): void
+    {
+        $this->processDataForService->findAll();
     }
 
 
