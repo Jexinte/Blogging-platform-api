@@ -27,6 +27,13 @@ interface PostCrud
      * @return array<string>|bool
      */
     public function findBy(int $id): array|bool;
+
+    /**
+     * Summary of delete
+     * @param int $id
+     * @return void
+     */
+    public function delete(int $id): void;
 }
 
 /**
