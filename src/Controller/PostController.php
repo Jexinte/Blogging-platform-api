@@ -51,7 +51,11 @@ class PostController
         $this->processDataForService->update($uri, $json);
     }
 
-
+    /**
+     * Summary of delete
+     * @param string $uri
+     * @return void
+     */
     public function delete(string $uri): void
     {
         $this->processDataForService->delete($uri);
@@ -67,10 +71,23 @@ class PostController
         $this->processDataForService->getOne($uri);
     }
 
+    /**
+     * Summary of findAll
+     * @return void
+     */
     public function findAll(): void
     {
         $this->processDataForService->findAll();
     }
 
 
+    /**
+     * Summary of findByParameter
+     * @param string $uri
+     * @return void
+     */
+    public function findByParameter(string $uri): void
+    {
+        $this->processDataForService->findByParameter($uri);
+    }
 }

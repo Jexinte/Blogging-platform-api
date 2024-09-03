@@ -56,10 +56,11 @@ class Router
                 break;
             case Method::GET:
                 if (preg_match(Route::FIND_ALL, $this->request->uri())) {
-
                     $this->postController->findAll();
                 } elseif (preg_match(Route::GET_ONE, $this->request->uri())) {
                     $this->postController->getOne($this->request->uri());
+                } elseif (preg_match(Route::FIND_BY_PARAMETER, $this->request->uri())) {
+                    $this->postController->findByParameter($this->request->uri());
                 }
                 break;
 

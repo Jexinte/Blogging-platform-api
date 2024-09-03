@@ -21,5 +21,6 @@ enum Route: string
     public const DELETE = '/\/blogging\-platform\-api\/public\/index\.php\/delete\/\d+$/';
     public const GET_ONE = '/\/blogging\-platform\-api\/public\/index\.php\/posts\/\d+$/';
     public const FIND_ALL = '/\/blogging\-platform\-api\/public\/index\.php\/posts$/';
+    public const FIND_BY_PARAMETER = '/\/blogging\-platform\-api\/public\/index\.php\/posts(?:\?term=\w+)$/';
 
 }

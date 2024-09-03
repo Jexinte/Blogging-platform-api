@@ -181,6 +181,11 @@ class ProcessDataForService
         throw new Exception("The resource with the id $id do not exist !", HttpStatus::NOT_FOUND);
     }
 
+    /**
+     * Summary of findAll
+     * @throws \Exception
+     * @return void
+     */
     public function findAll(): void
     {
         $posts =  $this->postRepository->findAll();
@@ -189,12 +194,8 @@ class ProcessDataForService
         }
         $output = fopen('php://output', 'w');
 
-        foreach ($posts as $k => $post) {
-            $posts[$k]['created_at'] = $this->formatDateTime($post['created_at']);
-            $posts[$k]['updated_at'] = $this->formatDateTime($post['updated_at']);
-        }
 
-        fwrite($output, json_encode($posts));
+        fwrite($output, json_encode($this->postsWithDateFormatted($posts)));
         fclose($output);
     }
 
@@ -206,6 +207,42 @@ class ProcessDataForService
     public function formatDateTime(string $date): string
     {
         return implode('T', explode(' ', $date)) . 'Z';
+    }
+
+    /**
+     * Summary of findByParameter
+     * @param string $uri
+     * @throws \Exception
+     * @return void
+     */
+    public function findByParameter(string $uri): void
+    {
+        $posOfEqual = strpos($uri, "=");
+        $parameterUriValue = substr($uri, $posOfEqual + 1);
+        $posts = $this->postRepository->findByParameter($parameterUriValue);
+        if (empty($posts)) {
+            throw new Exception("No posts have been found with the term $parameterUriValue !", HttpStatus::NOT_FOUND);
+        }
+
+        $output = fopen('php://output', 'w');
+
+
+        fwrite($output, json_encode($this->postsWithDateFormatted($posts)));
+        fclose($output);
+    }
+
+    /**
+     * Summary of postsWithDateFormatted
+     * @param array<string> $posts
+     * @return array<string>
+     */
+    public function postsWithDateFormatted(array $posts): array
+    {
+        foreach ($posts as $k => $post) {
+            $posts[$k]['created_at'] = $this->formatDateTime($post['created_at']);
+            $posts[$k]['updated_at'] = $this->formatDateTime($post['updated_at']);
+        }
+        return $posts;
     }
 
 }

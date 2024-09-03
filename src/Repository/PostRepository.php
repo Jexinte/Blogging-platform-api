@@ -174,4 +174,18 @@ class PostRepository
         $req->bindParam(':id', $id);
         $req->execute();
     }
+
+    /**
+     * Summary of findByParameter
+     * @param string $parameterFromUri
+     * @return array<string>
+     */
+    public function findByParameter(string $parameterFromUri): array
+    {
+        $dbConnect = $this->db->connect();
+        $req = $dbConnect->prepare("SELECT * FROM post WHERE title = '$parameterFromUri' OR content ='$parameterFromUri' OR category = '$parameterFromUri'");
+        $req->execute();
+
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
