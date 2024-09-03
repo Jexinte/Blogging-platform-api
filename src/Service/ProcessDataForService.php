@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 namespace Service;
-
 use Exception;
 use Entity\Post;
 use Enumeration\Message\Uri;
@@ -122,8 +121,8 @@ class ProcessDataForService
                     $output = fopen('php://output', 'w');
 
                     $postUpdated = $this->postRepository->findBy($id);
-                    $postUpdated['created_at'] = implode('T', explode(' ', $postUpdated['created_at'])).'Z';
-                    $postUpdated['updated_at'] = implode('T', explode(' ', $postUpdated['updated_at'])).'Z';
+                    $postUpdated['created_at'] = $this->formatDateTime($postUpdated['updated_at']);;
+                    $postUpdated['updated_at'] = $this->formatDateTime($postUpdated['updated_at']);
 
                     fwrite($output, json_encode($postUpdated));
                     fclose($output);
@@ -170,14 +169,41 @@ class ProcessDataForService
 
             $output = fopen('php://output', 'w');
 
-            $post['created_at'] = implode('T', explode(' ', $post['created_at'])).'Z';
-            $post['updated_at'] = implode('T', explode(' ', $post['updated_at'])).'Z';
+            $post['created_at'] = $this->formatDateTime($post['created_at']);
+            $post['updated_at'] = $this->formatDateTime($post['updated_at']);
 
             fwrite($output, json_encode($post));
             fclose($output);
             return;
         }
         throw new Exception("The resource with the id $id do not exist !", HttpStatus::NOT_FOUND);
+    }
+
+    public function findAll():void
+    {
+        $posts =  $this->postRepository->findAll();
+        if(empty($posts)){
+            throw new Exception("No posts have been found !", HttpStatus::NOT_FOUND);
+        }
+        $output = fopen('php://output', 'w');
+        
+      foreach($posts as $k => $post){
+        $posts[$k]['created_at'] = $this->formatDateTime($post['created_at']);
+        $posts[$k]['updated_at'] = $this->formatDateTime($post['updated_at']);
+      }
+   
+      fwrite($output,json_encode($posts));
+      fclose($output);
+    }
+
+    /**
+     * Summary of formatDateTime
+     * @param string $date
+     * @return string
+     */
+    public function formatDateTime(string $date):string
+    {
+        return implode('T', explode(' ', $date)) . 'Z';
     }
 
 }
