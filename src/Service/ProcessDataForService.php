@@ -132,7 +132,7 @@ class ProcessDataForService
                     break;
 
                 default:
-                    throw new Exception("The resource with the id $id do not exist !", HttpStatus::NOT_FOUND);
+                    throw new Exception("No post found !", HttpStatus::NOT_FOUND);
             }
 
         }
@@ -153,7 +153,7 @@ class ProcessDataForService
             $this->postRepository->delete($id);
             return;
         }
-        throw new Exception("The resource with the id $id do not exist !", HttpStatus::NOT_FOUND);
+        throw new Exception("No post found !", HttpStatus::NOT_FOUND);
     }
 
     /**
@@ -178,7 +178,7 @@ class ProcessDataForService
             fclose($output);
             return;
         }
-        throw new Exception("The resource with the id $id do not exist !", HttpStatus::NOT_FOUND);
+        throw new Exception("No post found !", HttpStatus::NOT_FOUND);
     }
 
     /**

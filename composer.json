@@ -52,10 +52,13 @@
         "d-load": "update psr-4 new namespaces",
         "tests-service": "run Service tests files"
     },
-    "require": {},
     "config": {
         "allow-plugins": {
             "phpro/grumphp": true
         }
+    },
+    "require": {
+        "zircote/swagger-php": "^4.10",
+        "twig/twig": "^3.12"
     }
 }

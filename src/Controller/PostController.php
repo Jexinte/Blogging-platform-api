@@ -7,7 +7,7 @@ namespace Controller;
 use Service\ProcessDataForService;
 
 /**
- * PHP version 8.
+ * PHP version 8.2
  *
  * @category Controller
  * @package  PostController
@@ -15,6 +15,7 @@ use Service\ProcessDataForService;
  * @license  ISC License
  * @link     https://github.com/Jexinte/Blogging-platform-api
  */
+
 
 class PostController
 {
@@ -70,6 +71,8 @@ class PostController
     {
         $this->processDataForService->getOne($uri);
     }
+
+
 
     /**
      * Summary of findAll
