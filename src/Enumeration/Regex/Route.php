@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Enumeration\Regex;
 
 /**
- * PHP version 8.
+ * PHP version 8.2
  *
  * @category Enumeration\Regex
  * @package  Route

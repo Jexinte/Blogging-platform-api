@@ -7,7 +7,7 @@ use Service\ValidateDataTypeService;
 use Enumeration\Message\Field as Message;
 
 /**
- * PHP version 8.
+ * PHP version 8.2
  *
  * @category tests\Functional\Service
  * @package  ValidateDataTypeServiceTest

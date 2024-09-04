@@ -7,7 +7,7 @@ namespace Entity;
 use DateTime;
 
 /**
- * PHP version 8.
+ * PHP version 8.2
  *
  * @category Entity
  * @package  Post

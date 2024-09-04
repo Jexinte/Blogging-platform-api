@@ -9,7 +9,7 @@ use Enumeration\Status\HttpStatus;
 use Enumeration\Message\Field as Message;
 
 /**
- * PHP version 8.
+ * PHP version 8.2
  *
  * @category Service
  * @package  ValidateDataTypeService

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Enumeration\Message;
 
 /**
- * PHP version 8.
+ * PHP version 8.2
  *
  * @category Enumeration\Message
  * @package  Field

@@ -8,7 +8,7 @@ use Enumeration\Message\Field as Message;
 use Enumeration\Regex\StringPattern;
 
 /**
- * PHP version 8.
+ * PHP version 8.2
  *
  * @category tests\Functional\Service
  * @package  validateDataValueServiceTest

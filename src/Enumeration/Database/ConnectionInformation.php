@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Enumeration\Database;
 
 /**
- * PHP version 8.
+ * PHP version 8.2
  *
  * @category Enumeration\Database
  * @package  ConnectionInformation
