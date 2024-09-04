@@ -6,6 +6,7 @@ use Util\Request;
 use Enumeration\Message\Uri;
 use Enumeration\Regex\Route;
 use Controller\PostController;
+use Twig\Loader\FilesystemLoader;
 use Enumeration\Status\HttpStatus;
 use Service\ProcessDataForService;
 use Enumeration\RequestMethod\Method;
@@ -38,6 +39,10 @@ class Router
      */
     public function resolveAction(): void
     {
+        $loader = new FilesystemLoader('../templates/documentation/');
+        $twig = new \Twig\Environment($loader, [
+        'cache' => false,
+        ]);
 
         $input = fopen('php://input', 'r');
 
@@ -61,6 +66,9 @@ class Router
                     $this->postController->getOne($this->request->uri());
                 } elseif (preg_match(Route::FIND_BY_PARAMETER, $this->request->uri())) {
                     $this->postController->findByParameter($this->request->uri());
+                } else {
+                    header('Content-Type: text-plain');
+                    echo $twig->render('base.twig');
                 }
                 break;
 
