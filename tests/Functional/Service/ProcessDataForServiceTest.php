@@ -15,7 +15,7 @@ use Enumeration\Message\Field as Message;
 use Enumeration\Database\ConnectionInformation;
 
 /**
- * PHP version 8.
+ * PHP version 8.2
  *
  * @category tests\Functional\Service
  * @package  ProcessDataForServiceTest
@@ -32,11 +32,11 @@ class ProcessDataForServiceTest extends TestCase
     private DatabaseConnection $database;
     private ProcessDataForService $processDataForService;
 
-    public const URI_CREATE = "/blogging-platform-api/public/index.php/create";
+    public const URI_CREATE = "/blogging-platform-api/public/index.php/posts/create";
     public const BAD_URI_CREATE = "/blogging-platform-api/public/index.php";
 
-    public const URI_UPDATE = "/blogging-platform-api/public/index.php/update/1";
-    public const BAD_URI_UPDATE = "/blogging-platform-api/public/index.php/update";
+    public const URI_UPDATE = "/blogging-platform-api/public/index.php/posts/update/1";
+    public const BAD_URI_UPDATE = "/blogging-platform-api/public/index.php/posts/update";
 
     /**
     * Summary of setUp
@@ -199,8 +199,10 @@ class ProcessDataForServiceTest extends TestCase
 
     public function testShouldReturnTheSameDate(): void
     {
-        $date = new DateTime('now');
-        $this->assertSame($date->format(Format::ISO_8601), $this->processDataForService->formatDateTime($date->format(Format::ISO_8601)));
+        $date = new Datetime('now');
+        $arr = (array) $date;
+        
+        $this->assertSame($date->format(Format::ISO_8601), $this->processDataForService->formatDateTime($date->format(current(explode('.',$arr['date'])))));
     }
 
 }

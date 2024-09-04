@@ -43,7 +43,7 @@ interface PostCrud
 }
 
 /**
- * PHP version 8.
+ * PHP version 8.2
  *
  * @category Repository
  * @package  PostRepository
