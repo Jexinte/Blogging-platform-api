@@ -6,7 +6,7 @@ use Entity\Post;
 use PHPUnit\Framework\TestCase;
 
 /**
- * PHP version 8.
+ * PHP version 8.2
  *
  * @category tests\Unit
  * @package  PostTest
