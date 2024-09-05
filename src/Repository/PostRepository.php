@@ -156,9 +156,7 @@ class PostRepository
         $req = $dbConnect->prepare('SELECT * From post WHERE id = :id');
         $req->bindParam(':id', $id);
         $req->execute();
-
         $post = $req->fetch(PDO::FETCH_ASSOC);
-
         return $post;
     }
 
@@ -183,9 +181,8 @@ class PostRepository
     public function findByParameter(string $parameterFromUri): array
     {
         $dbConnect = $this->db->connect();
-        $req = $dbConnect->prepare("SELECT * FROM post WHERE title = '$parameterFromUri' OR content ='$parameterFromUri' OR category = '$parameterFromUri'");
+        $req = $dbConnect->prepare("SELECT * FROM post WHERE title LIKE '%$parameterFromUri%' OR content LIKE '%$parameterFromUri%' OR category LIKE '%$parameterFromUri%'");
         $req->execute();
-
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 }

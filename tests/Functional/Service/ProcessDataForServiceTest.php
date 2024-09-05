@@ -95,7 +95,7 @@ class ProcessDataForServiceTest extends TestCase
     public function testShouldReturnAnObjectIfEverythingIsValidWhenCreatingAPost(): void
     {
         $json = ["title" => "Title","content" => "Example Content","tags" => ["Test"],"category" => "Category"];
-        $this->assertIsObject($this->processDataForService->validator(self::URI_CREATE, json_encode($json), Route::CREATE, Uri::CREATE_WRONG_FORMAT));
+        $this->assertIsObject($this->processDataForService->validatorForPostAndUpdate(self::URI_CREATE, json_encode($json), Route::CREATE, Uri::CREATE_WRONG_FORMAT));
     }
 
     /**
@@ -106,7 +106,7 @@ class ProcessDataForServiceTest extends TestCase
     {
         $json = [];
         $this->expectException(Exception::class);
-        $this->processDataForService->validator(self::URI_CREATE, json_encode($json), Route::CREATE, Uri::CREATE_WRONG_FORMAT);
+        $this->processDataForService->validatorForPostAndUpdate(self::URI_CREATE, json_encode($json), Route::CREATE, Uri::CREATE_WRONG_FORMAT);
     }
 
     /**
@@ -117,7 +117,7 @@ class ProcessDataForServiceTest extends TestCase
     {
         $json = [];
         try {
-            $this->processDataForService->validator(self::URI_CREATE, json_encode($json), Route::CREATE, Uri::CREATE_WRONG_FORMAT);
+            $this->processDataForService->validatorForPostAndUpdate(self::URI_CREATE, json_encode($json), Route::CREATE, Uri::CREATE_WRONG_FORMAT);
         } catch (Exception $e) {
             $this->assertSame(Message::ALL_FIELDS_MUST_BE_FILLED, $e->getMessage());
         }
@@ -167,7 +167,7 @@ class ProcessDataForServiceTest extends TestCase
     public function testShouldReturnAnObjectIfEverythingIsValidWhenUpdatingAPost(): void
     {
         $json = ["title" => "Title Updated", "content" => "Content Updated", "tags" => ["Test"], "category" => "Category"];
-        $this->assertIsObject($this->processDataForService->validator(self::URI_UPDATE, json_encode($json), Route::UPDATE, Uri::UPDATE_WRONG_FORMAT));
+        $this->assertIsObject($this->processDataForService->validatorForPostAndUpdate(self::URI_UPDATE, json_encode($json), Route::UPDATE, Uri::UPDATE_WRONG_FORMAT));
     }
 
     /**
@@ -178,7 +178,7 @@ class ProcessDataForServiceTest extends TestCase
     {
         $json = [];
         $this->expectException(Exception::class);
-        $this->processDataForService->validator(self::URI_UPDATE, json_encode($json), Route::UPDATE, Uri::UPDATE_WRONG_FORMAT);
+        $this->processDataForService->validatorForPostAndUpdate(self::URI_UPDATE, json_encode($json), Route::UPDATE, Uri::UPDATE_WRONG_FORMAT);
     }
 
 
@@ -190,7 +190,7 @@ class ProcessDataForServiceTest extends TestCase
     {
         $json = [];
         try {
-            $this->processDataForService->validator(self::URI_UPDATE, json_encode($json), Route::UPDATE, Uri::UPDATE_WRONG_FORMAT);
+            $this->processDataForService->validatorForPostAndUpdate(self::URI_UPDATE, json_encode($json), Route::UPDATE, Uri::UPDATE_WRONG_FORMAT);
         } catch (Exception $e) {
             $this->assertSame(Message::ALL_FIELDS_MUST_BE_FILLED, $e->getMessage());
         }
@@ -201,8 +201,8 @@ class ProcessDataForServiceTest extends TestCase
     {
         $date = new Datetime('now');
         $arr = (array) $date;
-        
-        $this->assertSame($date->format(Format::ISO_8601), $this->processDataForService->formatDateTime($date->format(current(explode('.',$arr['date'])))));
+
+        $this->assertSame($date->format(Format::ISO_8601), $this->processDataForService->formatDateTimeToIso8601($date->format(current(explode('.', $arr['date'])))));
     }
 
 }

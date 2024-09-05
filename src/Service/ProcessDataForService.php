@@ -53,7 +53,7 @@ class ProcessDataForService
     }
 
     /**
-     * Summary of validator
+     * Summary of validatorForPostAndUpdate
      * @param string $uri
      * @param string $json
      * @param string $regexPattern
@@ -61,7 +61,7 @@ class ProcessDataForService
      * @throws \Exception
      * @return \Entity\Post
      */
-    public function validator(string $uri, string $json, string $regexPattern, string $uriMessageWhenWrongFormat): Post
+    public function validatorForPostAndUpdate(string $uri, string $json, string $regexPattern, string $uriMessageWhenWrongFormat): Post
     {
         if ($this->isTheRightUri($uri, $regexPattern, $uriMessageWhenWrongFormat) && $this->validateDataTypeService->isAllValuesTypesAreValids($json) && $this->validateDataValueService->isAllValuesDataAreValids($json)) {
             $dataFromJson = json_decode($json, true);
@@ -81,24 +81,29 @@ class ProcessDataForService
      */
     public function post(string $uri, string $json): void
     {
-        $post = $this->validator($uri, $json, Route::CREATE, Uri::CREATE_WRONG_FORMAT);
+        $post = $this->validatorForPostAndUpdate($uri, $json, Route::CREATE, Uri::CREATE_WRONG_FORMAT);
 
         if (is_object($post)) {
-
             $this->postRepository->create($post);
-
-            $output = fopen('php://output', 'w');
-
             $lastPostCreated = $this->postRepository->getTheLastPostCreated();
-            $lastPostCreated['created_at'] = implode('T', explode(' ', $lastPostCreated['created_at'])).'Z';
-            $lastPostCreated['updated_at'] = implode('T', explode(' ', $lastPostCreated['updated_at'])).'Z';
+            $lastPostCreated['created_at'] = $this->formatDateTimeToIso8601($lastPostCreated['updated_at']);
+            $lastPostCreated['updated_at'] = $this->formatDateTimeToIso8601($lastPostCreated['updated_at']);
 
-            fwrite($output, json_encode($lastPostCreated));
-            fclose($output);
-            return;
+            echo json_encode($lastPostCreated);
         }
     }
 
+    /**
+     * Summary of getUriId
+     * @param string $uri
+     * @return int
+     */
+    public function getUriId(string $uri): int
+    {
+        $lastPostOfSlash = strrpos($uri, '/');
+        $id = intval(substr($uri, $lastPostOfSlash + 1));
+        return $id;
+    }
 
     /**
      * Summary of update
@@ -109,26 +114,18 @@ class ProcessDataForService
      */
     public function update(string $uri, string $json): void
     {
-        $post = $this->validator($uri, $json, Route::UPDATE, Uri::UPDATE_WRONG_FORMAT);
+        $post = $this->validatorForPostAndUpdate($uri, $json, Route::UPDATE, Uri::UPDATE_WRONG_FORMAT);
+        $id = $this->getUriId($uri);
+        $postFromDbBasedOnIdFromTheUri = $this->postRepository->findBy($id);
         if (is_object($post)) {
-            $lastPostOfSlash = strrpos($uri, '/');
-            $id = intval(substr($uri, $lastPostOfSlash + 1));
-            $postFromDbBasedOnIdFromTheUri = $this->postRepository->findBy($id);
 
-            switch (true) {
-                case is_array($postFromDbBasedOnIdFromTheUri):
+            switch (is_array($postFromDbBasedOnIdFromTheUri)) {
+                case true:
                     $this->postRepository->update($post, $id);
-
-                    $output = fopen('php://output', 'w');
-
                     $postUpdated = $this->postRepository->findBy($id);
-                    $postUpdated['created_at'] = $this->formatDateTime($postUpdated['updated_at']);
-                    ;
-                    $postUpdated['updated_at'] = $this->formatDateTime($postUpdated['updated_at']);
-
-                    fwrite($output, json_encode($postUpdated));
-                    fclose($output);
-
+                    $postUpdated['created_at'] = $this->formatDateTimeToIso8601($postUpdated['updated_at']);
+                    $postUpdated['updated_at'] = $this->formatDateTimeToIso8601($postUpdated['updated_at']);
+                    echo json_encode($postUpdated);
                     break;
 
                 default:
@@ -146,8 +143,7 @@ class ProcessDataForService
      */
     public function delete(string $uri): void
     {
-        $lastPostOfSlash = strrpos($uri, '/');
-        $id = intval(substr($uri, $lastPostOfSlash + 1));
+        $id = $this->getUriId($uri);
         $postThatGonnaBeDelete = $this->postRepository->findBy($id);
         if ($this->isTheRightUri($uri, Route::DELETE, Uri::DELETE_WRONG_FORMAT) && is_array($postThatGonnaBeDelete)) {
             $this->postRepository->delete($id);
@@ -164,18 +160,14 @@ class ProcessDataForService
      */
     public function getOne(string $uri): void
     {
-        $lastPostOfSlash = strrpos($uri, '/');
-        $id = intval(substr($uri, $lastPostOfSlash + 1));
+        $id = $this->getUriId($uri);
         $post = $this->postRepository->findBy($id);
         if (is_array($post)) {
+            $post['created_at'] = $this->formatDateTimeToIso8601($post['created_at']);
+            $post['updated_at'] = $this->formatDateTimeToIso8601($post['updated_at']);
 
-            $output = fopen('php://output', 'w');
+            echo json_encode($post);
 
-            $post['created_at'] = $this->formatDateTime($post['created_at']);
-            $post['updated_at'] = $this->formatDateTime($post['updated_at']);
-
-            fwrite($output, json_encode($post));
-            fclose($output);
             return;
         }
         throw new Exception("No post found !", HttpStatus::NOT_FOUND);
@@ -192,19 +184,16 @@ class ProcessDataForService
         if (empty($posts)) {
             throw new Exception("No posts have been found !", HttpStatus::NOT_FOUND);
         }
-        $output = fopen('php://output', 'w');
 
-
-        fwrite($output, json_encode($this->postsWithDateFormatted($posts)));
-        fclose($output);
+        echo json_encode($this->postsWithDateFormattedToIso8601($posts));
     }
 
     /**
-     * Summary of formatDateTime
+     * Summary of formatDateTimeToIso8601
      * @param string $date
      * @return string
      */
-    public function formatDateTime(string $date): string
+    public function formatDateTimeToIso8601(string $date): string
     {
         return implode('T', explode(' ', $date)) . 'Z';
     }
@@ -217,30 +206,25 @@ class ProcessDataForService
      */
     public function findByParameter(string $uri): void
     {
-        $posOfEqual = strpos($uri, "=");
-        $parameterUriValue = substr($uri, $posOfEqual + 1);
+        $parameterUriValue = substr($uri, strpos($uri, "=") + 1);
         $posts = $this->postRepository->findByParameter($parameterUriValue);
         if (empty($posts)) {
             throw new Exception("No posts have been found with the term $parameterUriValue !", HttpStatus::NOT_FOUND);
         }
 
-        $output = fopen('php://output', 'w');
-
-
-        fwrite($output, json_encode($this->postsWithDateFormatted($posts)));
-        fclose($output);
+        echo json_encode($this->postsWithDateFormattedToIso8601($posts));
     }
 
     /**
-     * Summary of postsWithDateFormatted
+     * Summary of postsWithDateFormattedToIso8601
      * @param array<string> $posts
      * @return array<string>
      */
-    public function postsWithDateFormatted(array $posts): array
+    public function postsWithDateFormattedToIso8601(array $posts): array
     {
         foreach ($posts as $k => $post) {
-            $posts[$k]['created_at'] = $this->formatDateTime($post['created_at']);
-            $posts[$k]['updated_at'] = $this->formatDateTime($post['updated_at']);
+            $posts[$k]['created_at'] = $this->formatDateTimeToIso8601($post['created_at']);
+            $posts[$k]['updated_at'] = $this->formatDateTimeToIso8601($post['updated_at']);
         }
         return $posts;
     }

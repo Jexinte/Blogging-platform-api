@@ -62,17 +62,17 @@ class ValidateDataTypeService
     {
         $arr = json_decode($json, true);
         $status = false;
-        switch (true) {
-            case (is_array($arr) && count($arr) == 4):
-                $isTitleAValidString = $this->isValueAString($arr['title'], Message::TITLE_IS_NOT_A_STRING);
-                $isContentAValidString = $this->isValueAString($arr["content"], Message::CONTENT_IS_NOT_A_STRING);
-                $isTagsAValidArray = $this->isTagsAnArray($arr);
-                $isCategoryAValidString = $this->isValueAString($arr["category"], Message::CATEGORY_IS_NOT_A_STRING);
+        if (is_array($arr) && count($arr) == 4) {
+            $isTitleAValidString = $this->isValueAString($arr['title'], Message::TITLE_IS_NOT_A_STRING);
+            $isContentAValidString = $this->isValueAString($arr["content"], Message::CONTENT_IS_NOT_A_STRING);
+            $isTagsAValidArray = $this->isTagsAnArray($arr);
+            $isCategoryAValidString = $this->isValueAString($arr["category"], Message::CATEGORY_IS_NOT_A_STRING);
 
-                if ($isTitleAValidString && $isContentAValidString && $isTagsAValidArray && $isCategoryAValidString) {
-                    $status = true;
-                }
+            if ($isTitleAValidString && $isContentAValidString && $isTagsAValidArray && $isCategoryAValidString) {
+                $status = true;
+            }
         }
+
         return $status;
     }
 

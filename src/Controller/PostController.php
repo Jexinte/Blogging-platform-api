@@ -31,43 +31,43 @@ class PostController
 
 
     /**
-     * Summary of create
+     * Summary of sendDataToPostService
      * @param string $uri
      * @param string $json
      * @return void
      */
-    public function create(string $uri, string $json): void
+    public function sendDataToPostService(string $uri, string $json): void
     {
         $this->processDataForService->post($uri, $json);
     }
 
     /**
-     * Summary of update
+     * Summary of sendDataToUpdateService
      * @param string $uri
      * @param string $json
      * @return void
      */
-    public function update(string $uri, string $json): void
+    public function sendDataToUpdateService(string $uri, string $json): void
     {
         $this->processDataForService->update($uri, $json);
     }
 
     /**
-     * Summary of delete
+     * Summary of sendDataToDeleteService
      * @param string $uri
      * @return void
      */
-    public function delete(string $uri): void
+    public function sendDataToDeleteService(string $uri): void
     {
         $this->processDataForService->delete($uri);
     }
 
     /**
-     * Summary of getOne
+     * Summary of getAPostFromGetOneService
      * @param string $uri
      * @return void
      */
-    public function getOne(string $uri): void
+    public function getAPostFromGetOneService(string $uri): void
     {
         $this->processDataForService->getOne($uri);
     }
@@ -75,21 +75,21 @@ class PostController
 
 
     /**
-     * Summary of findAll
+     * Summary of getPostsFromFindAllService
      * @return void
      */
-    public function findAll(): void
+    public function getPostsFromFindAllService(): void
     {
         $this->processDataForService->findAll();
     }
 
 
     /**
-     * Summary of findByParameter
+     * Summary of getPostsFromFindByParameterService
      * @param string $uri
      * @return void
      */
-    public function findByParameter(string $uri): void
+    public function getPostsFromFindByParameterService(string $uri): void
     {
         $this->processDataForService->findByParameter($uri);
     }

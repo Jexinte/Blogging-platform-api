@@ -29,9 +29,9 @@ class ValidateDataValueService
      */
     public function checkTagsPatternValues(array $tags = null): bool
     {
-        $isAllHaveTheSamePattern = array_map(fn ($tag) =>  preg_match(StringPattern::FORMAT, $tag), $tags['tags']);
+        $isAllValuesHaveTheSamePattern = array_map(fn ($tag) =>  preg_match(StringPattern::FORMAT, $tag), $tags['tags']);
 
-        if (!in_array(false, $isAllHaveTheSamePattern)) {
+        if (!in_array(false, $isAllValuesHaveTheSamePattern)) {
             return true;
         }
         throw new Exception(Message::WRONG_FORMAT_FOR_TAGS, HttpStatus::BAD_REQUEST);
@@ -79,21 +79,20 @@ class ValidateDataValueService
     {
         $arr = json_decode($json, true);
         $status = false;
-        switch (true) {
-            case (is_array($arr) && count($arr) == 4):
-                $isTitleNotEmpty = $this->isValueNotEmpty($arr['title'], Message::EMPTY_TITLE);
-                $isTitlePatternValid = $this->isPatternValueMatch(StringPattern::FORMAT, $arr['title'], Message::WRONG_FORMAT_FOR_TITLE);
-                $isContentNotEmpty = $this->isValueNotEmpty($arr['content'], Message::EMPTY_CONTENT);
-                $isContentPatternValid = $this->isPatternValueMatch(StringPattern::FORMAT, $arr['content'], Message::WRONG_FORMAT_FOR_CONTENT);
-                $isTagsNotEmpty = $this->isValueNotEmpty($arr['tags'], Message::EMPTY_TAGS);
-                $isTagsPatternValid = $this->checkTagsPatternValues($arr);
-                $isCategoryNotEmpty = $this->isValueNotEmpty($arr['category'], Message::EMPTY_CATEGORY);
-                $isCategoryPatternValid = $this->isPatternValueMatch(StringPattern::FORMAT, $arr['category'], Message::WRONG_FORMAT_FOR_CATEGORY);
+        if (is_array($arr) && count($arr) == 4) {
+            $isTitleNotEmpty = $this->isValueNotEmpty($arr['title'], Message::EMPTY_TITLE);
+            $isTitlePatternValid = $this->isPatternValueMatch(StringPattern::FORMAT, $arr['title'], Message::WRONG_FORMAT_FOR_TITLE);
+            $isContentNotEmpty = $this->isValueNotEmpty($arr['content'], Message::EMPTY_CONTENT);
+            $isContentPatternValid = $this->isPatternValueMatch(StringPattern::FORMAT, $arr['content'], Message::WRONG_FORMAT_FOR_CONTENT);
+            $isTagsNotEmpty = $this->isValueNotEmpty($arr['tags'], Message::EMPTY_TAGS);
+            $isTagsPatternValid = $this->checkTagsPatternValues($arr);
+            $isCategoryNotEmpty = $this->isValueNotEmpty($arr['category'], Message::EMPTY_CATEGORY);
+            $isCategoryPatternValid = $this->isPatternValueMatch(StringPattern::FORMAT, $arr['category'], Message::WRONG_FORMAT_FOR_CATEGORY);
 
 
-                if ($isTitlePatternValid && $isTitleNotEmpty && $isContentPatternValid && $isContentNotEmpty && $isTagsPatternValid && $isTagsNotEmpty && $isCategoryPatternValid && $isCategoryNotEmpty) {
-                    $status = true;
-                }
+            if ($isTitlePatternValid && $isTitleNotEmpty && $isContentPatternValid && $isContentNotEmpty && $isTagsPatternValid && $isTagsNotEmpty && $isCategoryPatternValid && $isCategoryNotEmpty) {
+                $status = true;
+            }
         }
         return $status;
     }
