@@ -1,6 +1,7 @@
 {
     "name": "mamad/blogging-platform-api",
     "description": "It's an api for a blogging platform",
+    "version": "1.0",
     "require-dev": {
         "phpro/grumphp": "^2.7",
         "friendsofphp/php-cs-fixer": "^3.63",
