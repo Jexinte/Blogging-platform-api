@@ -3,7 +3,7 @@ info:
   title: 'Blogging Platform API'
   version: '1.0'
 paths:
-  /blogging-platform-api/public/index.php/posts:
+  /blogging-platform-api/public/index.php/v1/posts:
     get:
       tags:
         - Get All Posts
@@ -21,7 +21,7 @@ paths:
           description: No posts have been found !
     
 
-  /blogging-platform-api/public/index.php/posts/{id}:
+  /blogging-platform-api/public/index.php/v1/posts/{id}:
     get:
       tags:
       - Get A Post
@@ -47,7 +47,7 @@ paths:
           '404':
               description: No post found !
 
-  /blogging-platform-api/public/index.php/posts?term={value}:
+  /blogging-platform-api/public/index.php/v1/posts?term={value}:
     get:
       tags:
       - Get Posts by term value
@@ -72,7 +72,7 @@ paths:
           '404':
               description: No posts found !
 
-  /blogging-platform-api/public/index.php/posts/create:
+  /blogging-platform-api/public/index.php/v1/posts/create:
     post:
         tags:
         - Create a Post
@@ -106,7 +106,7 @@ paths:
           '400':
               description: 'Error : Bad Request'
 
-  /blogging-platform-api/public/index.php/posts/update/{id}:
+  /blogging-platform-api/public/index.php/v1/posts/update/{id}:
     put:
         tags:
         - Update a Post
@@ -146,7 +146,7 @@ paths:
           '404':
               description: No post found !
 
-  /blogging-platform-api/public/index.php/posts/delete/{id}:
+  /blogging-platform-api/public/index.php/v1/posts/delete/{id}:
     delete:
         tags:
         - Delete a Post

@@ -32,11 +32,11 @@ class ProcessDataForServiceTest extends TestCase
     private DatabaseConnection $database;
     private ProcessDataForService $processDataForService;
 
-    public const URI_CREATE = "/blogging-platform-api/public/index.php/posts/create";
+    public const URI_CREATE = "/blogging-platform-api/public/index.php/v1/posts/create";
     public const BAD_URI_CREATE = "/blogging-platform-api/public/index.php";
 
-    public const URI_UPDATE = "/blogging-platform-api/public/index.php/posts/update/1";
-    public const BAD_URI_UPDATE = "/blogging-platform-api/public/index.php/posts/update";
+    public const URI_UPDATE = "/blogging-platform-api/public/index.php/v1/posts/update/1";
+    public const BAD_URI_UPDATE = "/blogging-platform-api/public/index.php/v1/posts/update";
 
     /**
     * Summary of setUp
