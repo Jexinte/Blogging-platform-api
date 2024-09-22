@@ -3,4 +3,4 @@ grumphp.yml
 phpstan.neon
 vendor
 .php-cs-fixer.cache
-openapi.yaml
+openapi.json
