@@ -22,7 +22,7 @@ composer g-run
 
 # Documentation
 
-1 - In order to see the API Documentation, just rename the openapi.dist.yaml by openapi.yaml
+1 - In order to see the API Documentation, just rename the openapi.dist.json by openapi.json
 
 2 - A sample of the documentation, you can see it on the entry point 
 

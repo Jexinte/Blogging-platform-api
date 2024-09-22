@@ -16,11 +16,11 @@ namespace Enumeration\Regex;
 
 enum Route: string
 {
-    public const CREATE = '/\/blogging\-platform\-api\/public\/index\.php\/v1\/posts\/create$/';
-    public const UPDATE = '/\/blogging\-platform\-api\/public\/index\.php\/v1\/posts\/update\/\d+$/';
-    public const DELETE = '/\/blogging\-platform\-api\/public\/index\.php\/v1\/posts\/delete\/\d+$/';
-    public const GET_ONE = '/\/blogging\-platform\-api\/public\/index\.php\/v1\/posts\/\d+$/';
-    public const FIND_ALL = '/\/blogging\-platform\-api\/public\/index\.php\/v1\/posts$/';
-    public const FIND_BY_PARAMETER = '/\/blogging\-platform\-api\/public\/index\.php\/v1\/posts(?:\?term=\w+)$/';
+    public const CREATE = '/\/blogging\-platform\-api\/public\/index\.php\/api\/v1\/posts\/create$/';
+    public const UPDATE = '/\/blogging\-platform\-api\/public\/index\.php\/api\/v1\/posts\/update\/\d+$/';
+    public const DELETE = '/\/blogging\-platform\-api\/public\/index\.php\/api\/v1\/posts\/delete\/\d+$/';
+    public const GET_ONE = '/\/blogging\-platform\-api\/public\/index\.php\/api\/v1\/posts\/\d+$/';
+    public const FIND_ALL = '/\/blogging\-platform\-api\/public\/index\.php\/api\/v1\/posts$/';
+    public const FIND_BY_PARAMETER = '/\/blogging\-platform\-api\/public\/index\.php\/api\/v1\/posts(?:\?term=\w+)$/';
 
 }
