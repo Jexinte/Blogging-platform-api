@@ -4,3 +4,4 @@ phpstan.neon
 vendor
 .php-cs-fixer.cache
 openapi.json
+.idea
