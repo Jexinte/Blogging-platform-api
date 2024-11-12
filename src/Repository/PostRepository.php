@@ -52,13 +52,13 @@ interface PostCrud
  * @link     https://github.com/Jexinte/Blogging-platform-api
  */
 
-class PostRepository
+class PostRepository implements PostCrud
 {
     /**
      * Summary of __construct
      * @param \Config\DatabaseConnection $db
      */
-    public function __construct(private DatabaseConnection $db)
+    public function __construct(private readonly DatabaseConnection $db)
     {
 
     }

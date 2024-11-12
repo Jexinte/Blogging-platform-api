@@ -60,6 +60,7 @@
     },
     "require": {
         "zircote/swagger-php": "^4.10",
-        "twig/twig": "^3.12"
+        "twig/twig": "^3.12",
+      "ext-pdo": "*"
     }
 }

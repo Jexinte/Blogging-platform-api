@@ -26,7 +26,7 @@ class DatabaseConnection
      * @param string $username
      * @param string $password
      */
-    public function __construct(private string $host, private string $dbname, private string $username, private string $password)
+    public function __construct(private readonly string $host, private readonly string $dbname, private readonly string $username, private readonly string $password)
     {
     }
 
